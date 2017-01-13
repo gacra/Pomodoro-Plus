@@ -5,12 +5,15 @@
  */
 package pomodoroplus;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -21,6 +24,7 @@ public class Painel extends javax.swing.JPanel{
     private JPanel janela;
     JScrollPane rola;
     JanelaPrincipal aijanela;
+    private boolean nomePeriodoUsado = false;
     
     /**
      * Creates new form Painel
@@ -41,59 +45,87 @@ public class Painel extends javax.swing.JPanel{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        duracao = new javax.swing.JLabel();
+        botaoMaisLixo = new javax.swing.JButton();
+        nomePeriodo = new javax.swing.JTextField();
+        CampoAte = new javax.swing.JFormattedTextField();
+        ate = new javax.swing.JLabel();
+        campoDuracao = new javax.swing.JFormattedTextField();
 
+        setBackground(new java.awt.Color(2, 24, 43));
         setPreferredSize(new java.awt.Dimension(950, 40));
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        jLabel1.setText("Duração:");
+        duracao.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        duracao.setForeground(new java.awt.Color(255, 255, 255));
+        duracao.setText("Duração:");
 
-        jButton2.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Mais.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botaoMaisLixo.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        botaoMaisLixo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Mais.png"))); // NOI18N
+        botaoMaisLixo.setFocusPainted(false);
+        botaoMaisLixo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botaoMaisLixoActionPerformed(evt);
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Nome do período");
+        nomePeriodo.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        nomePeriodo.setForeground(new java.awt.Color(102, 102, 102));
+        nomePeriodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        nomePeriodo.setText("Nome do período");
+        nomePeriodo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nomePeriodoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nomePeriodoFocusLost(evt);
+            }
+        });
+        nomePeriodo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nomePeriodoMouseClicked(evt);
+            }
+        });
 
-        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jFormattedTextField1.setText("00 h 00 m 00 s");
-        jFormattedTextField1.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        CampoAte.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        CampoAte.setText("00 h 00 m 00 s");
+        CampoAte.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        CampoAte.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CampoAteMousePressed(evt);
+            }
+        });
 
-        jLabel2.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        jLabel2.setText("Até:");
+        ate.setBackground(new java.awt.Color(255, 255, 255));
+        ate.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        ate.setForeground(new java.awt.Color(255, 255, 255));
+        ate.setText("Até:");
 
-        jFormattedTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jFormattedTextField2.setText("00 h 00 m 00 s");
-        jFormattedTextField2.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        campoDuracao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        campoDuracao.setText("00 h 00 m 00 s");
+        campoDuracao.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        campoDuracao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                campoDuracaoMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(94, 94, 94)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addComponent(duracao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(ate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CampoAte, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(botaoMaisLixo)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -101,33 +133,85 @@ public class Painel extends javax.swing.JPanel{
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
+                    .addComponent(botaoMaisLixo, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)
-                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(duracao)
+                        .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CampoAte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ate)
+                        .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(9, 9, 9))
         );
+
+        try{
+            MaskFormatter maskID = new MaskFormatter("## h ## m ## s");
+            maskID.setPlaceholderCharacter('0');
+            maskID.install(CampoAte);
+        }catch(ParseException ex){}
+        try{
+            MaskFormatter maskID = new MaskFormatter("## h ## m ## s");
+            maskID.setPlaceholderCharacter('0');
+            maskID.install(campoDuracao);
+        }catch(ParseException ex){}
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botaoMaisLixoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMaisLixoActionPerformed
         Painel novoPainel = new Painel(janela, rola, aijanela);
         aijanela.cont++;
         janela.setPreferredSize(new Dimension(novoPainel.getWidth(),aijanela.cont*(40+(((FlowLayout)janela.getLayout()).getVgap()))));
         janela.setVisible(true);
         janela.add(novoPainel);
         aijanela.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botaoMaisLixoActionPerformed
+
+    private void campoDuracaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_campoDuracaoMousePressed
+        int posicao = campoDuracao.getCaretPosition();
+        System.out.println(posicao);
+        if(posicao == 2 || posicao == 3 || posicao == 4){
+            campoDuracao.setCaretPosition(5);
+        }else if(posicao == 7 || posicao == 8 || posicao == 9|| posicao == 12 || posicao == 13|| posicao == 14){
+            campoDuracao.setCaretPosition(10);
+        }
+    }//GEN-LAST:event_campoDuracaoMousePressed
+
+    private void CampoAteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CampoAteMousePressed
+        int posicao = CampoAte.getCaretPosition();
+        System.out.println(posicao);
+        if(posicao == 2 || posicao == 3 || posicao == 4){
+            CampoAte.setCaretPosition(5);
+        }else if(posicao == 7 || posicao == 8 || posicao == 9|| posicao == 12 || posicao == 13|| posicao == 14){
+            CampoAte.setCaretPosition(10);
+        }
+    }//GEN-LAST:event_CampoAteMousePressed
+
+    private void nomePeriodoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomePeriodoMouseClicked
+        
+    }//GEN-LAST:event_nomePeriodoMouseClicked
+
+    private void nomePeriodoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nomePeriodoFocusGained
+        if(nomePeriodoUsado == false){
+            nomePeriodo.setText("");
+            nomePeriodo.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_nomePeriodoFocusGained
+
+    private void nomePeriodoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nomePeriodoFocusLost
+        if(nomePeriodo.getText().contentEquals("")){
+            nomePeriodo.setText("Nome do Período");
+            nomePeriodo.setForeground(new java.awt.Color(102, 102, 102));
+            nomePeriodoUsado = false;
+        }else{
+            nomePeriodoUsado = true;
+        }
+    }//GEN-LAST:event_nomePeriodoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JFormattedTextField CampoAte;
+    private javax.swing.JLabel ate;
+    private javax.swing.JButton botaoMaisLixo;
+    private javax.swing.JFormattedTextField campoDuracao;
+    private javax.swing.JLabel duracao;
+    private javax.swing.JTextField nomePeriodo;
     // End of variables declaration//GEN-END:variables
 }

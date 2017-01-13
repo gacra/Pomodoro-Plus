@@ -35,6 +35,7 @@ public class PainelHorario1 extends javax.swing.JPanel{
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
         jLabel10.setText(":00");
 
+        setBackground(new java.awt.Color(238, 241, 246));
         setPreferredSize(new java.awt.Dimension(480, 170));
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 150)); // NOI18N
