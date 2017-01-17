@@ -478,7 +478,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Container class="javax.swing.JPanel" name="programa">
+                        <Container class="javax.swing.JPanel" name="programaPanel">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="2b" green="18" red="2" type="rgb"/>
@@ -632,6 +632,9 @@
                               <Font name="Century Gothic" size="52" style="1"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="inicioTempoCaretUpdate"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="try{&#xa;    MaskFormatter maskID = new MaskFormatter(&quot;##:##:##&quot;);&#xa;    maskID.setPlaceholderCharacter(&apos;0&apos;);&#xa;    maskID.install(inicioTempo);&#xa;}catch(ParseException ex){}"/>
                           </AuxValues>

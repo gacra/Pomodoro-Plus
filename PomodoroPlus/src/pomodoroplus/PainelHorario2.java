@@ -28,12 +28,12 @@ public class PainelHorario2 extends javax.swing.JPanel{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel6 = new javax.swing.JLabel();
+        horMinSeg = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(238, 241, 246));
 
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
-        jLabel6.setText("00:00");
+        horMinSeg.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
+        horMinSeg.setText("00:00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -41,19 +41,19 @@ public class PainelHorario2 extends javax.swing.JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
+                .addComponent(horMinSeg)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(horMinSeg, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel horMinSeg;
     // End of variables declaration//GEN-END:variables
 }

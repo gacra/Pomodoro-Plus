@@ -1,39 +1,53 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pomodoroplus;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.ParseException;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.text.MaskFormatter;
 
 /**
- *
+ * Painel para a configuração de um período de tempo.
  * @author Guilherme
  */
 public class Painel extends javax.swing.JPanel{
 
+    //Janela que contêm os paineis
     private JPanel janela;
-    JScrollPane rola;
-    JanelaPrincipal aijanela;
+    //Barra de rolagem de janela
+    private JScrollPane rolagem;
+    //Janela principal do pragrama
+    private JanelaPrincipal janelaPric;
+    //Indica se o usuário escolheu um nome para o período
     private boolean nomePeriodoUsado = false;
+    //Indica se o painel já foi incluído (Botão +)
+    private boolean incluido = false;
+    //Classe que representa o período de tempo
+    Periodo periodo;
+    //Ponteiro para o Programa do qual esse período fará parte
+    Programa programa;
+    
+    boolean pronto = false;
     
     /**
-     * Creates new form Painel
+     * Cria uma instância de Painel
+     * @param janela Janela que contêm os paineis
+     * @param rolagem Barra de rolagem de janela
+     * @param janelaPric Janela principal do programa
      */
-    public Painel(JPanel janela, JScrollPane rola, JanelaPrincipal aijanela){
+    public Painel(JPanel janela, JScrollPane rolagem, JanelaPrincipal janelaPric, Programa programa){
         this.janela = janela;
-        this.rola = rola;
-        this.aijanela = aijanela;
+        this.rolagem = rolagem;
+        this.janelaPric = janelaPric;
+        this.programa = programa;
         initComponents();
+        janelaPric.incCont();
+        periodo = new Periodo(janelaPric.getCont(), this.labelAte);
+        programa.getConjPeriodos().add(periodo);
+        pronto = true;
     }
 
     /**
@@ -48,9 +62,9 @@ public class Painel extends javax.swing.JPanel{
         duracao = new javax.swing.JLabel();
         botaoMaisLixo = new javax.swing.JButton();
         nomePeriodo = new javax.swing.JTextField();
-        CampoAte = new javax.swing.JFormattedTextField();
         ate = new javax.swing.JLabel();
         campoDuracao = new javax.swing.JFormattedTextField();
+        labelAte = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(2, 24, 43));
         setPreferredSize(new java.awt.Dimension(950, 40));
@@ -80,20 +94,6 @@ public class Painel extends javax.swing.JPanel{
                 nomePeriodoFocusLost(evt);
             }
         });
-        nomePeriodo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nomePeriodoMouseClicked(evt);
-            }
-        });
-
-        CampoAte.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        CampoAte.setText("00 h 00 m 00 s");
-        CampoAte.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        CampoAte.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CampoAteMousePressed(evt);
-            }
-        });
 
         ate.setBackground(new java.awt.Color(255, 255, 255));
         ate.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
@@ -103,18 +103,27 @@ public class Painel extends javax.swing.JPanel{
         campoDuracao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         campoDuracao.setText("00 h 00 m 00 s");
         campoDuracao.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        campoDuracao.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                campoDuracaoCaretUpdate(evt);
+            }
+        });
         campoDuracao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 campoDuracaoMousePressed(evt);
             }
         });
 
+        labelAte.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        labelAte.setForeground(new java.awt.Color(255, 255, 255));
+        labelAte.setText("00 h 00 m 00 s");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
                 .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(duracao)
@@ -122,8 +131,8 @@ public class Painel extends javax.swing.JPanel{
                 .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(ate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CampoAte, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(labelAte)
                 .addGap(18, 18, 18)
                 .addComponent(botaoMaisLixo)
                 .addContainerGap())
@@ -132,22 +141,16 @@ public class Painel extends javax.swing.JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botaoMaisLixo, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(duracao)
-                        .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(CampoAte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(ate)
-                        .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(duracao)
+                    .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ate)
+                    .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelAte)
+                    .addComponent(botaoMaisLixo))
                 .addGap(9, 9, 9))
         );
 
-        try{
-            MaskFormatter maskID = new MaskFormatter("## h ## m ## s");
-            maskID.setPlaceholderCharacter('0');
-            maskID.install(CampoAte);
-        }catch(ParseException ex){}
         try{
             MaskFormatter maskID = new MaskFormatter("## h ## m ## s");
             maskID.setPlaceholderCharacter('0');
@@ -156,37 +159,30 @@ public class Painel extends javax.swing.JPanel{
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoMaisLixoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMaisLixoActionPerformed
-        Painel novoPainel = new Painel(janela, rola, aijanela);
-        aijanela.cont++;
-        janela.setPreferredSize(new Dimension(novoPainel.getWidth(),aijanela.cont*(40+(((FlowLayout)janela.getLayout()).getVgap()))));
-        janela.setVisible(true);
-        janela.add(novoPainel);
-        aijanela.setVisible(true);
+        if(this.incluido == false){
+            ajustaPainel();
+            criaPeriodo();
+            criaNovoPainel();
+            this.incluido = true;
+        }else{
+        
+        }
+        
+        //Debug
+        System.out.println("Tamanho: " + programa.getConjPeriodos().size());
+        for(Periodo p : programa.getConjPeriodos()){
+            System.out.println(p);
+        }
     }//GEN-LAST:event_botaoMaisLixoActionPerformed
 
     private void campoDuracaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_campoDuracaoMousePressed
         int posicao = campoDuracao.getCaretPosition();
-        System.out.println(posicao);
         if(posicao == 2 || posicao == 3 || posicao == 4){
             campoDuracao.setCaretPosition(5);
         }else if(posicao == 7 || posicao == 8 || posicao == 9|| posicao == 12 || posicao == 13|| posicao == 14){
             campoDuracao.setCaretPosition(10);
         }
     }//GEN-LAST:event_campoDuracaoMousePressed
-
-    private void CampoAteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CampoAteMousePressed
-        int posicao = CampoAte.getCaretPosition();
-        System.out.println(posicao);
-        if(posicao == 2 || posicao == 3 || posicao == 4){
-            CampoAte.setCaretPosition(5);
-        }else if(posicao == 7 || posicao == 8 || posicao == 9|| posicao == 12 || posicao == 13|| posicao == 14){
-            CampoAte.setCaretPosition(10);
-        }
-    }//GEN-LAST:event_CampoAteMousePressed
-
-    private void nomePeriodoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomePeriodoMouseClicked
-        
-    }//GEN-LAST:event_nomePeriodoMouseClicked
 
     private void nomePeriodoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nomePeriodoFocusGained
         if(nomePeriodoUsado == false){
@@ -205,13 +201,53 @@ public class Painel extends javax.swing.JPanel{
         }
     }//GEN-LAST:event_nomePeriodoFocusLost
 
+    private void campoDuracaoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_campoDuracaoCaretUpdate
+        long tempo;
+        String texto = campoDuracao.getText();
+        if(texto.length() == 14 && pronto){
+            tempo = Conversor.string2ToLong(texto);
+            System.out.println("Segs painel: " + tempo);
+            periodo.setDuracao(tempo);
+            programa.atualiza(periodo);
+        }
+    }//GEN-LAST:event_campoDuracaoCaretUpdate
+
+    /**
+     *  Ajusta Painel para sua inclusão.
+     */
+    private void ajustaPainel(){
+        if(!this.nomePeriodoUsado){
+            this.nomePeriodo.setText("Período " + String.valueOf(janelaPric.getCont()));
+            this.nomePeriodo.setForeground(Color.black);
+        }
+        this.botaoMaisLixo.setIcon(new ImageIcon(getClass().getResource("/Figuras/Lixo.png")));
+    }
+    
+    /**
+     *  Cria um objeto Periodo, colocando-o na lista.
+     */
+    private void criaPeriodo(){
+        
+    }
+    
+    /**
+    *   Cria um novo painel, ajustando o tamanho da janela.
+    */
+    private void criaNovoPainel(){
+        Painel novoPainel = new Painel(janela, rolagem, janelaPric, programa);
+        janela.setPreferredSize(new Dimension(novoPainel.getWidth(),janelaPric.getCont()*(40+(((FlowLayout)janela.getLayout()).getVgap()))));
+        janela.setVisible(true);
+        janela.add(novoPainel);
+        janelaPric.setVisible(true);
+        this.rolagem.getVerticalScrollBar().setValue(this.rolagem.getVerticalScrollBar().getMaximum());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField CampoAte;
     private javax.swing.JLabel ate;
     private javax.swing.JButton botaoMaisLixo;
     private javax.swing.JFormattedTextField campoDuracao;
     private javax.swing.JLabel duracao;
+    public javax.swing.JLabel labelAte;
     private javax.swing.JTextField nomePeriodo;
     // End of variables declaration//GEN-END:variables
 }

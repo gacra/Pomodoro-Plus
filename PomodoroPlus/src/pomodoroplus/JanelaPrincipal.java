@@ -8,29 +8,15 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.metal.MetalButtonUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -43,10 +29,11 @@ import javax.swing.text.MaskFormatter;
  */
 public class JanelaPrincipal extends javax.swing.JFrame{
     
-    public int cont =1;
+    private int cont =0;
     private boolean pausado = false;
     private boolean som = true;
     public Integer linha = 0;
+    private Programa programa;
     
     /**
      * Creates new form JanelaPrincipal
@@ -55,25 +42,23 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
         initComponents();
         
-        
-        
         //Iniciando painel de programação
+        
+        programa = new Programa(duracaoTempo, ateTempo);
+        
         programaRolagem.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         FlowLayout layout = new FlowLayout();  
-        programa.setLayout(layout);
+        programaPanel.setLayout(layout);
         layout.setAlignment(FlowLayout.LEFT);      
-        Painel novoPainel = new Painel(programa, programaRolagem, this);
-        programa.add(novoPainel);
-        programa.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programa.getLayout()).getVgap()))));
+        Painel novoPainel = new Painel(programaPanel, programaRolagem, this, programa);
+        programaPanel.add(novoPainel);
+        programaPanel.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programaPanel.getLayout()).getVgap()))));
         
         //Teste
         tabela.setValueAt("123456789012345678901", 0, 0);
         tabela.setValueAt("00:00:00", 0, 1);
         tabela.setValueAt("00:00:00", 0, 2);
-        tabela.setValueAt("00:00:00", 0, 3);
-        
-        
-        
+        tabela.setValueAt("00:00:00", 0, 3);        
         
         //Iniciando painel do cronômetro
         FlowLayout layout2 = new FlowLayout();  
@@ -84,8 +69,6 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Figuras/icone.png"));
         this.setIconImage(iconeTitulo);
-        
-        
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -117,7 +100,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         escolheSom = new javax.swing.JLabel();
         PainelProgFundo = new javax.swing.JPanel();
         programaRolagem = new javax.swing.JScrollPane();
-        programa = new javax.swing.JPanel();
+        programaPanel = new javax.swing.JPanel();
         iniDurAte = new javax.swing.JPanel();
         inicio = new javax.swing.JLabel();
         duracao = new javax.swing.JLabel();
@@ -407,23 +390,23 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             programaRolagem.setMaximumSize(new java.awt.Dimension(300, 32767));
             programaRolagem.setPreferredSize(new java.awt.Dimension(950, 366));
 
-            programa.setBackground(new java.awt.Color(2, 24, 43));
-            programa.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-            programa.setMaximumSize(new java.awt.Dimension(300, 32767));
-            programa.setPreferredSize(new java.awt.Dimension(900, 350));
+            programaPanel.setBackground(new java.awt.Color(2, 24, 43));
+            programaPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            programaPanel.setMaximumSize(new java.awt.Dimension(300, 32767));
+            programaPanel.setPreferredSize(new java.awt.Dimension(900, 350));
 
-            javax.swing.GroupLayout programaLayout = new javax.swing.GroupLayout(programa);
-            programa.setLayout(programaLayout);
-            programaLayout.setHorizontalGroup(
-                programaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            javax.swing.GroupLayout programaPanelLayout = new javax.swing.GroupLayout(programaPanel);
+            programaPanel.setLayout(programaPanelLayout);
+            programaPanelLayout.setHorizontalGroup(
+                programaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 900, Short.MAX_VALUE)
             );
-            programaLayout.setVerticalGroup(
-                programaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            programaPanelLayout.setVerticalGroup(
+                programaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGap(0, 354, Short.MAX_VALUE)
             );
 
-            programaRolagem.setViewportView(programa);
+            programaRolagem.setViewportView(programaPanel);
 
             iniDurAte.setBackground(new java.awt.Color(238, 241, 246));
 
@@ -445,6 +428,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             inicioTempo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
             inicioTempo.setText("00:00:00");
             inicioTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            inicioTempo.addCaretListener(new javax.swing.event.CaretListener() {
+                public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                    inicioTempoCaretUpdate(evt);
+                }
+            });
 
             iniciarAgora.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
             iniciarAgora.setText("Iniciar agora");
@@ -709,6 +697,24 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
     }//GEN-LAST:event_escolheSomMouseClicked
 
+    private void inicioTempoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_inicioTempoCaretUpdate
+        long tempo;
+        String texto = inicioTempo.getText();
+        if(texto.length() == 8){
+            tempo = Conversor.string1ToLong(texto);
+            System.out.println("Segs início: " + tempo);
+            programa.setInicio(tempo);
+        }
+    }//GEN-LAST:event_inicioTempoCaretUpdate
+
+    public int getCont(){
+        return cont;
+    }
+
+    public void incCont(){
+        cont++;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelProgFundo;
     private javax.swing.JLabel ajuda;
@@ -736,7 +742,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private javax.swing.JPanel painelMeio;
     private javax.swing.JPanel painelPrincFundo;
     private javax.swing.JButton pausaCont;
-    private javax.swing.JPanel programa;
+    private javax.swing.JPanel programaPanel;
     private javax.swing.JScrollPane programaRolagem;
     private javax.swing.JButton salvar;
     private javax.swing.JComboBox selectSom;

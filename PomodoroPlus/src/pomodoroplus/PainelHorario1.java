@@ -29,8 +29,8 @@ public class PainelHorario1 extends javax.swing.JPanel{
     private void initComponents() {
 
         jLabel10 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        horMin = new javax.swing.JLabel();
+        seg = new javax.swing.JLabel();
 
         jLabel10.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
         jLabel10.setText(":00");
@@ -38,11 +38,11 @@ public class PainelHorario1 extends javax.swing.JPanel{
         setBackground(new java.awt.Color(238, 241, 246));
         setPreferredSize(new java.awt.Dimension(480, 170));
 
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 150)); // NOI18N
-        jLabel6.setText("00:00");
+        horMin.setFont(new java.awt.Font("Century Gothic", 1, 150)); // NOI18N
+        horMin.setText("00:00");
 
-        jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
-        jLabel11.setText(":00");
+        seg.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
+        seg.setText(":00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -50,9 +50,9 @@ public class PainelHorario1 extends javax.swing.JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(horMin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11)
+                .addComponent(seg)
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
@@ -61,18 +61,18 @@ public class PainelHorario1 extends javax.swing.JPanel{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
-                        .addComponent(jLabel11))
+                        .addComponent(seg))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(horMin, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 43, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel horMin;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel seg;
     // End of variables declaration//GEN-END:variables
 }
