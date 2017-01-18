@@ -7,6 +7,7 @@ import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -46,7 +47,8 @@ public class Painel extends javax.swing.JPanel{
         initComponents();
         janelaPric.incCont();
         periodo = new Periodo(janelaPric.getCont(), this.labelAte);
-        programa.getConjPeriodos().add(periodo);
+        programa.getConjPeriodos().add(this);
+        programa.atualiza(this);
         pronto = true;
     }
 
@@ -60,11 +62,11 @@ public class Painel extends javax.swing.JPanel{
     private void initComponents() {
 
         duracao = new javax.swing.JLabel();
-        botaoMaisLixo = new javax.swing.JButton();
         nomePeriodo = new javax.swing.JTextField();
         ate = new javax.swing.JLabel();
         campoDuracao = new javax.swing.JFormattedTextField();
         labelAte = new javax.swing.JLabel();
+        insereExclui = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(2, 24, 43));
         setPreferredSize(new java.awt.Dimension(950, 40));
@@ -72,15 +74,6 @@ public class Painel extends javax.swing.JPanel{
         duracao.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         duracao.setForeground(new java.awt.Color(255, 255, 255));
         duracao.setText("Duração:");
-
-        botaoMaisLixo.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
-        botaoMaisLixo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Mais.png"))); // NOI18N
-        botaoMaisLixo.setFocusPainted(false);
-        botaoMaisLixo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoMaisLixoActionPerformed(evt);
-            }
-        });
 
         nomePeriodo.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         nomePeriodo.setForeground(new java.awt.Color(102, 102, 102));
@@ -118,6 +111,18 @@ public class Painel extends javax.swing.JPanel{
         labelAte.setForeground(new java.awt.Color(255, 255, 255));
         labelAte.setText("00 h 00 m 00 s");
 
+        insereExclui.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Mais.png"))); // NOI18N
+        insereExclui.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insereExcluiActionPerformed(evt);
+            }
+        });
+        insereExclui.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                insereExcluiKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +139,7 @@ public class Painel extends javax.swing.JPanel{
                 .addGap(14, 14, 14)
                 .addComponent(labelAte)
                 .addGap(18, 18, 18)
-                .addComponent(botaoMaisLixo)
+                .addComponent(insereExclui)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -147,8 +152,8 @@ public class Painel extends javax.swing.JPanel{
                     .addComponent(ate)
                     .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelAte)
-                    .addComponent(botaoMaisLixo))
-                .addGap(9, 9, 9))
+                    .addComponent(insereExclui))
+                .addGap(8, 8, 8))
         );
 
         try{
@@ -157,23 +162,6 @@ public class Painel extends javax.swing.JPanel{
             maskID.install(campoDuracao);
         }catch(ParseException ex){}
     }// </editor-fold>//GEN-END:initComponents
-
-    private void botaoMaisLixoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMaisLixoActionPerformed
-        if(this.incluido == false){
-            ajustaPainel();
-            criaPeriodo();
-            criaNovoPainel();
-            this.incluido = true;
-        }else{
-        
-        }
-        
-        //Debug
-        System.out.println("Tamanho: " + programa.getConjPeriodos().size());
-        for(Periodo p : programa.getConjPeriodos()){
-            System.out.println(p);
-        }
-    }//GEN-LAST:event_botaoMaisLixoActionPerformed
 
     private void campoDuracaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_campoDuracaoMousePressed
         int posicao = campoDuracao.getCaretPosition();
@@ -206,11 +194,31 @@ public class Painel extends javax.swing.JPanel{
         String texto = campoDuracao.getText();
         if(texto.length() == 14 && pronto){
             tempo = Conversor.string2ToLong(texto);
-            System.out.println("Segs painel: " + tempo);
             periodo.setDuracao(tempo);
-            programa.atualiza(periodo);
+            programa.atualiza(this);
         }
     }//GEN-LAST:event_campoDuracaoCaretUpdate
+
+    private void insereExcluiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_insereExcluiKeyTyped
+        if((int) evt.getKeyChar() == 10){
+            insereExclui.doClick();
+        }
+    }//GEN-LAST:event_insereExcluiKeyTyped
+
+    private void insereExcluiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insereExcluiActionPerformed
+        if(this.incluido == false){
+            if(!Conversor.testeZero(this.campoDuracao.getText())){
+                ajustaPainel();
+                criaPeriodo();
+                criaNovoPainel();
+                this.incluido = true;
+            }else{
+                this.campoDuracao.requestFocus();
+            }
+        }else{
+        
+        }
+    }//GEN-LAST:event_insereExcluiActionPerformed
 
     /**
      *  Ajusta Painel para sua inclusão.
@@ -219,8 +227,9 @@ public class Painel extends javax.swing.JPanel{
         if(!this.nomePeriodoUsado){
             this.nomePeriodo.setText("Período " + String.valueOf(janelaPric.getCont()));
             this.nomePeriodo.setForeground(Color.black);
+            this.nomePeriodoUsado = true;
         }
-        this.botaoMaisLixo.setIcon(new ImageIcon(getClass().getResource("/Figuras/Lixo.png")));
+        this.insereExclui.setIcon(new ImageIcon(getClass().getResource("/Figuras/Lixo.png")));
     }
     
     /**
@@ -240,13 +249,24 @@ public class Painel extends javax.swing.JPanel{
         janela.add(novoPainel);
         janelaPric.setVisible(true);
         this.rolagem.getVerticalScrollBar().setValue(this.rolagem.getVerticalScrollBar().getMaximum());
+        novoPainel.getNomePeriodo().requestFocus();
     }
 
+    public Periodo getPeriodo(){
+        return periodo;
+    }
+
+    public JTextField getNomePeriodo(){
+        return nomePeriodo;
+    }
+
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ate;
-    private javax.swing.JButton botaoMaisLixo;
     private javax.swing.JFormattedTextField campoDuracao;
     private javax.swing.JLabel duracao;
+    private javax.swing.JButton insereExclui;
     public javax.swing.JLabel labelAte;
     private javax.swing.JTextField nomePeriodo;
     // End of variables declaration//GEN-END:variables

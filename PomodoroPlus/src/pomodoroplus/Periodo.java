@@ -1,6 +1,5 @@
 package pomodoroplus;
 
-import java.awt.Label;
 import javax.swing.JLabel;
 
 /**
@@ -24,7 +23,6 @@ public class Periodo{
         duracao = 0;
         ate = 0;
         this.labelAte = labelAte;
-        System.out.println("Construtor: " + labelAte);
     }
     
     public long getDuracao(){

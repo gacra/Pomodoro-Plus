@@ -65,4 +65,40 @@ public class Conversor{
         retorno = formato.format(hora) + " h " + formato.format(min) + " m " + formato.format(seg) + " s";
         return retorno;
     }
+    
+     /**
+     * Converte um tempo em segundos (long) para uma string no formato 00:00:00.
+     * @param tempo Tempo em segundos (long).
+     * @return String no formato 00:00:00.
+     */
+    static String longToString1(long tempo){
+        String retorno;
+        long aux, seg, min, hora;
+        
+        seg = tempo%60;
+        aux = tempo/60;
+        
+        min = aux%60;
+        aux = aux/60;
+        
+        hora = aux%60;
+        
+        DecimalFormat formato = new DecimalFormat("00");
+        retorno = formato.format(hora) + ":" + formato.format(min) + ":" + formato.format(seg);
+        return retorno;
+    }
+    
+    /**
+     * Testa se a string no formato 00 h 00 m 00 s tem o tempo zero.
+     * @param texto String no formato 00 h 00 m 00 s.
+     * @return true se o tempo representado pela string é zero / false caso contrário
+     */
+    static boolean testeZero(String texto){
+        long tempo = string2ToLong(texto);
+        if(tempo == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

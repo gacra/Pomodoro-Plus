@@ -704,6 +704,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             tempo = Conversor.string1ToLong(texto);
             System.out.println("Segs início: " + tempo);
             programa.setInicio(tempo);
+            programa.atualiza(null);
         }
     }//GEN-LAST:event_inicioTempoCaretUpdate
 

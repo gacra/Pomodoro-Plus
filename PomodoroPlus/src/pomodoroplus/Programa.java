@@ -20,7 +20,7 @@ public class Programa{
     //Label tempo final do programa na JanelaPrincipal
     private JLabel labelAte;
     //Lista de objetos Periodo que formam o programa
-    private LinkedList<Periodo> conjPeriodos;
+    private LinkedList<Painel> listaPaineis;
 
     /**
      * Cria novo objeto Programa
@@ -33,7 +33,7 @@ public class Programa{
         inicio = 0;
         duracao = 0;
         ate = 0;
-        conjPeriodos = new LinkedList<>();
+        listaPaineis = new LinkedList<>();
     }
 
     public long getInicio(){
@@ -60,31 +60,46 @@ public class Programa{
         this.ate = ate;
     }
 
-    public LinkedList<Periodo> getConjPeriodos(){
-        return conjPeriodos;
+    public LinkedList<Painel> getConjPeriodos(){
+        return listaPaineis;
     }
     
-    public void atualiza(Periodo chamou){
-        int indice = conjPeriodos.indexOf(chamou);
-        Periodo periodo;
+    /**
+     
+     */
+    public void atualiza(Painel chamou){
+        //Atualizando os tempos finais dos períodos.
+        int indice;
+        long tempoVelhoChamou = 0;  //Usado na próxima parte
+               
+        if(chamou != null){
+            indice = listaPaineis.indexOf(chamou);
+            tempoVelhoChamou = chamou.getPeriodo().getDuracao();
+        }else{
+            indice = 0;
+        }
+        
+        Periodo periodo = null;
         long tempo, tempoAnt;
         
         if(indice == 0){
             tempoAnt = this.inicio;
-            System.out.println("tempoAnt" + tempoAnt);
         }else{
-            tempoAnt = conjPeriodos.get(indice-1).getAte();
+            tempoAnt = listaPaineis.get(indice-1).getPeriodo().getAte();
         }
-             
-        for(int i = indice; i<conjPeriodos.size(); i++){
-             periodo = conjPeriodos.get(i);
+        for(int i = indice; i<listaPaineis.size(); i++){
+             periodo = listaPaineis.get(i).getPeriodo();
              tempo = periodo.getDuracao();
              periodo.setAte(tempo+tempoAnt);
              JLabel teste = periodo.labelAte;
              teste.setText(Conversor.longToString2(periodo.getAte()));
              teste.repaint();
-             tempoAnt = tempo;
+             tempoAnt = periodo.getAte();
         }
         
+        this.ate = periodo.getAte();
+        this.labelAte.setText(Conversor.longToString1(this.ate));
+        this.duracao = this.ate - this.inicio;
+        this.labelDuracao.setText(Conversor.longToString1(this.duracao));
     }
 }
