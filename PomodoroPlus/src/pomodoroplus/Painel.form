@@ -45,13 +45,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="duracao" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="nomePeriodo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ate" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="campoDuracao" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelAte" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="insereExclui" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="duracao" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nomePeriodo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ate" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoDuracao" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelAte" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           </Group>
@@ -110,6 +112,7 @@
       </Properties>
       <Events>
         <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="campoDuracaoCaretUpdate"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoDuracaoFocusLost"/>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="campoDuracaoMousePressed"/>
       </Events>
       <AuxValues>

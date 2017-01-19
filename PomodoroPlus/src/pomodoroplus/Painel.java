@@ -38,6 +38,7 @@ public class Painel extends javax.swing.JPanel{
      * @param janela Janela que contêm os paineis
      * @param rolagem Barra de rolagem de janela
      * @param janelaPric Janela principal do programa
+     * @param programa Referência para o objeto Programa
      */
     public Painel(JPanel janela, JScrollPane rolagem, JanelaPrincipal janelaPric, Programa programa){
         this.janela = janela;
@@ -101,6 +102,11 @@ public class Painel extends javax.swing.JPanel{
                 campoDuracaoCaretUpdate(evt);
             }
         });
+        campoDuracao.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoDuracaoFocusLost(evt);
+            }
+        });
         campoDuracao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 campoDuracaoMousePressed(evt);
@@ -146,13 +152,14 @@ public class Painel extends javax.swing.JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(duracao)
-                    .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ate)
-                    .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelAte)
-                    .addComponent(insereExclui))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(insereExclui)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(duracao)
+                        .addComponent(nomePeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ate)
+                        .addComponent(campoDuracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelAte)))
                 .addGap(8, 8, 8))
         );
 
@@ -206,19 +213,22 @@ public class Painel extends javax.swing.JPanel{
     }//GEN-LAST:event_insereExcluiKeyTyped
 
     private void insereExcluiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insereExcluiActionPerformed
-        if(this.incluido == false){
+        if(this.incluido == false){ //Insersão
             if(!Conversor.testeZero(this.campoDuracao.getText())){
                 ajustaPainel();
-                criaPeriodo();
                 criaNovoPainel();
                 this.incluido = true;
             }else{
                 this.campoDuracao.requestFocus();
             }
-        }else{
-        
+        }else{  //Exclusão
+            removePainel();
         }
     }//GEN-LAST:event_insereExcluiActionPerformed
+
+    private void campoDuracaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoDuracaoFocusLost
+        campoDuracao.setText(Conversor.longToString2(periodo.getDuracao()));
+    }//GEN-LAST:event_campoDuracaoFocusLost
 
     /**
      *  Ajusta Painel para sua inclusão.
@@ -231,14 +241,7 @@ public class Painel extends javax.swing.JPanel{
         }
         this.insereExclui.setIcon(new ImageIcon(getClass().getResource("/Figuras/Lixo.png")));
     }
-    
-    /**
-     *  Cria um objeto Periodo, colocando-o na lista.
-     */
-    private void criaPeriodo(){
-        
-    }
-    
+     
     /**
     *   Cria um novo painel, ajustando o tamanho da janela.
     */
@@ -250,6 +253,15 @@ public class Painel extends javax.swing.JPanel{
         janelaPric.setVisible(true);
         this.rolagem.getVerticalScrollBar().setValue(this.rolagem.getVerticalScrollBar().getMaximum());
         novoPainel.getNomePeriodo().requestFocus();
+    }
+    
+    private void removePainel(){
+        this.programa.atualizaExclusao(this);
+        this.programa.getConjPeriodos().remove(this);
+        this.janela.remove(this);
+        this.janela.repaint();
+        this.janelaPric.repaint();
+        this.janelaPric.decCont();
     }
 
     public Periodo getPeriodo(){

@@ -1,7 +1,7 @@
 package pomodoroplus;
 
 /**
- *
+ * Classe principal do programa.
  * @author Guilherme
  */
 public class PomodoroPlus{

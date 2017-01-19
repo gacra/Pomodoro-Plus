@@ -3,7 +3,7 @@ package pomodoroplus;
 import javax.swing.JLabel;
 
 /**
- *
+ * Classe que representa um período de tempo do Programa
  * @author Guilherme
  */
 public class Periodo{
@@ -18,6 +18,11 @@ public class Periodo{
     //Ponteiro para labelAte do Painel
     public JLabel labelAte;
 
+    /**
+     * Cria um objeto Periodo.
+     * @param numero Número do período.
+     * @param labelAte Referência para a Label Ate da janela principal.
+     */
     public Periodo(int numero, JLabel labelAte){
         this.numero = numero;
         duracao = 0;

@@ -24,15 +24,20 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 
 /**
- *
+ * Janela principal do programa
  * @author Guilherme
  */
 public class JanelaPrincipal extends javax.swing.JFrame{
     
+    //Contador de quantos Paineis existem
     private int cont =0;
+    //Se o contador regressivo está pausado ou não
     private boolean pausado = false;
+    //Se o som está ativado ou não
     private boolean som = true;
+    //Número de linhas na tabela
     public Integer linha = 0;
+    //Objeto Programa (conjunto de períodos de tempo)
     private Programa programa;
     
     /**
@@ -44,7 +49,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
         //Iniciando painel de programação
         
-        programa = new Programa(duracaoTempo, ateTempo);
+        programa = new Programa(duracaoTempo, ateTempo, inicioTempo);
         
         programaRolagem.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         FlowLayout layout = new FlowLayout();  
@@ -129,6 +134,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         painelMeio.setBackground(new java.awt.Color(238, 241, 246));
 
         guias.setBackground(new java.awt.Color(255, 255, 255));
+        guias.setFocusable(false);
         guias.setFont(new java.awt.Font("Verdana", 1, 24)); // NOI18N
         guias.setMinimumSize(new java.awt.Dimension(200, 40));
 
@@ -415,15 +421,19 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
             duracao.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
             duracao.setText("Duração:");
+            duracao.setFocusable(false);
 
             ate.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
             ate.setText("Até:");
+            ate.setFocusable(false);
 
             ateTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
             ateTempo.setText("00:00:00");
+            ateTempo.setFocusable(false);
 
             duracaoTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
             duracaoTempo.setText("00:00:00");
+            duracaoTempo.setFocusable(false);
 
             inicioTempo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
             inicioTempo.setText("00:00:00");
@@ -433,10 +443,21 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                     inicioTempoCaretUpdate(evt);
                 }
             });
+            inicioTempo.addFocusListener(new java.awt.event.FocusAdapter() {
+                public void focusLost(java.awt.event.FocusEvent evt) {
+                    inicioTempoFocusLost(evt);
+                }
+            });
 
             iniciarAgora.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
             iniciarAgora.setText("Iniciar agora");
             iniciarAgora.setFocusPainted(false);
+            iniciarAgora.setFocusable(false);
+            iniciarAgora.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    iniciarAgoraActionPerformed(evt);
+                }
+            });
 
             javax.swing.GroupLayout iniDurAteLayout = new javax.swing.GroupLayout(iniDurAte);
             iniDurAte.setLayout(iniDurAteLayout);
@@ -499,14 +520,18 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
             nomeProg1Alt.setFont(new java.awt.Font("Gill Sans MT", 1, 36)); // NOI18N
             nomeProg1Alt.setText("Pomodoro");
+            nomeProg1Alt.setFocusable(false);
 
             nomeProg2Alt.setFont(new java.awt.Font("Gill Sans MT", 1, 18)); // NOI18N
             nomeProg2Alt.setText("Plus");
+            nomeProg2Alt.setFocusable(false);
 
             simboloProgAlt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Tomate.png"))); // NOI18N
+            simboloProgAlt.setFocusable(false);
 
             ajudaAlt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/help.png"))); // NOI18N
             ajudaAlt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            ajudaAlt.setFocusable(false);
 
             javax.swing.GroupLayout cabecalhoAltLayout = new javax.swing.GroupLayout(cabecalhoAlt);
             cabecalhoAlt.setLayout(cabecalhoAltLayout);
@@ -544,6 +569,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             iniciar.setText("INICIAR");
             iniciar.setBorderPainted(false);
             iniciar.setFocusPainted(false);
+            iniciar.setFocusable(false);
             iniciar.setPreferredSize(new java.awt.Dimension(157, 35));
 
             salvar.setBackground(new java.awt.Color(255, 55, 45));
@@ -552,6 +578,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             salvar.setText("CARREGAR");
             salvar.setBorderPainted(false);
             salvar.setFocusPainted(false);
+            salvar.setFocusable(false);
 
             carregar.setBackground(new java.awt.Color(255, 55, 45));
             carregar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
@@ -559,6 +586,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             carregar.setText("SALVAR");
             carregar.setBorderPainted(false);
             carregar.setFocusPainted(false);
+            carregar.setFocusable(false);
             carregar.setPreferredSize(new java.awt.Dimension(157, 35));
 
             javax.swing.GroupLayout botoesLayout = new javax.swing.GroupLayout(botoes);
@@ -702,11 +730,26 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         String texto = inicioTempo.getText();
         if(texto.length() == 8){
             tempo = Conversor.string1ToLong(texto);
-            System.out.println("Segs início: " + tempo);
             programa.setInicio(tempo);
             programa.atualiza(null);
         }
     }//GEN-LAST:event_inicioTempoCaretUpdate
+
+    private void inicioTempoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inicioTempoFocusLost
+        inicioTempo.setText(Conversor.longToString1(programa.getInicio()));
+    }//GEN-LAST:event_inicioTempoFocusLost
+
+    private void iniciarAgoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarAgoraActionPerformed
+        if(iniciarAgora.isSelected()){
+            this.programa.iniciaThreadRelogio();
+            this.inicioTempo.setEditable(false);
+            this.inicioTempo.setFocusable(false);
+        }else{
+            this.programa.paraThreadRelogio();
+            this.inicioTempo.setEditable(true);
+            this.inicioTempo.setFocusable(true);
+        }
+    }//GEN-LAST:event_iniciarAgoraActionPerformed
 
     public int getCont(){
         return cont;
@@ -714,6 +757,10 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
     public void incCont(){
         cont++;
+    }
+    
+    public void decCont(){
+        cont--;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
