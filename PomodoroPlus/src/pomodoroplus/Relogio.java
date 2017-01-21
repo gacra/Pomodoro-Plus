@@ -21,6 +21,8 @@ public class Relogio{
         //System.out.println("Hora: " + hora + " Min: " +  min + " Seg: " + seg);
         this.horario = (hora*3600) + (min*60) + seg;
     }
-    
-    
+
+    public long getHorario(){
+        return horario;
+    }    
 }

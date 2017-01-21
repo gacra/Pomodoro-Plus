@@ -12,6 +12,7 @@ import java.text.ParseException;
 import javax.swing.AbstractButton;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -37,6 +38,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private boolean som = true;
     //Número de linhas na tabela
     public Integer linha = 0;
+    //Objeto Cronômetro regressivo para 1ª tela
+    private Cronometro cronometro;    
     //Objeto Programa (conjunto de períodos de tempo)
     private Programa programa;
     
@@ -47,9 +50,10 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
         initComponents();
         
-        //Iniciando painel de programação
+        cronometro = new Cronometro(this);
         
-        programa = new Programa(duracaoTempo, ateTempo, inicioTempo);
+        //Iniciando painel de programação
+        programa = new Programa(duracaoTempo, ateTempo, inicioTempo, cronometro);
         
         programaRolagem.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         FlowLayout layout = new FlowLayout();  
@@ -571,6 +575,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             iniciar.setFocusPainted(false);
             iniciar.setFocusable(false);
             iniciar.setPreferredSize(new java.awt.Dimension(157, 35));
+            iniciar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    iniciarActionPerformed(evt);
+                }
+            });
 
             salvar.setBackground(new java.awt.Color(255, 55, 45));
             salvar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
@@ -729,14 +738,14 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         long tempo;
         String texto = inicioTempo.getText();
         if(texto.length() == 8){
-            tempo = Conversor.string1ToLong(texto);
+            tempo = Utils.string1ToLong(texto);
             programa.setInicio(tempo);
             programa.atualiza(null);
         }
     }//GEN-LAST:event_inicioTempoCaretUpdate
 
     private void inicioTempoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_inicioTempoFocusLost
-        inicioTempo.setText(Conversor.longToString1(programa.getInicio()));
+        inicioTempo.setText(Utils.longToString1(programa.getInicio()));
     }//GEN-LAST:event_inicioTempoFocusLost
 
     private void iniciarAgoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarAgoraActionPerformed
@@ -751,6 +760,13 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_iniciarAgoraActionPerformed
 
+    private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
+        this.iniciarAgora.setSelected(false);
+        this.programa.finalizaProgramacao();
+        this.inicioTempo.setEditable(true);
+        this.inicioTempo.setFocusable(true);
+    }//GEN-LAST:event_iniciarActionPerformed
+
     public int getCont(){
         return cont;
     }
@@ -761,6 +777,14 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     
     public void decCont(){
         cont--;
+    }
+
+    public JTable getTabela(){
+        return tabela;
+    }
+
+    public JButton getPausaCont(){
+        return pausaCont;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -36,7 +36,7 @@ public class RelInicio extends Relogio implements Runnable{
             super.atualizaRelogio();
             this.programa.setInicio(super.horario);
             this.programa.atualiza(null);
-            inicioTempo.setText(Conversor.longToString1(super.horario));
+            inicioTempo.setText(Utils.longToString1(super.horario));
         }
     }
     

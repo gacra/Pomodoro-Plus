@@ -2,6 +2,7 @@ package pomodoroplus;
 
 import java.util.LinkedList;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
@@ -28,14 +29,17 @@ public class Programa{
     private Thread relInicioThread;
     //Referência para o campo inicioTempo da Janela Principal
     JFormattedTextField inicioTempo;
+    //Referência para o Cronômetro ao qual será enviado a programação
+    Cronometro cronometro;
 
     /**
      * Cria novo objeto Programa
      * @param labelDuracao Label tempo de duração do programa na JanelaPrincipal
      * @param labelAte Label tempo final do programa na JanelaPrincipal
      * @param inicioTempo Referência para o campo inicioTempo da Janela Principal
+     * @param cronometro Referência para o Cronômetro ao qual será enviado a programação
      */
-    public Programa(JLabel labelDuracao, JLabel labelAte, JFormattedTextField inicioTempo){
+    public Programa(JLabel labelDuracao, JLabel labelAte, JFormattedTextField inicioTempo, Cronometro cronometro){
         this.labelDuracao = labelDuracao;
         this.labelAte = labelAte;
         inicio = 0;
@@ -43,6 +47,7 @@ public class Programa{
         duracao = 0;
         ate = 0;
         this.inicioTempo = inicioTempo;
+        this.cronometro = cronometro;
         listaPaineis = new LinkedList<>();
         relInicio = new RelInicio(this, inicioTempo);
     }
@@ -89,6 +94,7 @@ public class Programa{
             indice = 0;
         }
         
+        Painel painel = null;
         Periodo periodo = null;
         long tempo, tempoAnt;
         
@@ -98,20 +104,21 @@ public class Programa{
             tempoAnt = listaPaineis.get(indice-1).getPeriodo().getAte();
         }
         for(int i = indice; i<listaPaineis.size(); i++){
-             periodo = listaPaineis.get(i).getPeriodo();
+             painel = listaPaineis.get(i);
+             periodo = painel.getPeriodo();
              tempo = periodo.getDuracao();
              periodo.setAte(tempo+tempoAnt);
-             JLabel teste = periodo.labelAte;
-             teste.setText(Conversor.longToString2(periodo.getAte()));
+             JLabel teste = painel.getLabelAte();
+             teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
              tempoAnt = periodo.getAte();
         }
         
         this.ate = periodo.getAte();
-        this.labelAte.setText(Conversor.longToString1(this.ate));
+        this.labelAte.setText(Utils.longToString1(this.ate));
         this.duracao = this.ate - this.inicio;
         if(this.duracao<=359999){
-            this.labelDuracao.setText(Conversor.longToString1Duracao(this.duracao));
+            this.labelDuracao.setText(Utils.longToString1Duracao(this.duracao));
         }else{
            this.labelDuracao.setText("--:--:--");
         }
@@ -126,6 +133,7 @@ public class Programa{
                
         indice = listaPaineis.indexOf(chamou);
         
+        Painel painel = null;
         Periodo periodo = null;
         long tempo, tempoAnt;
         
@@ -135,20 +143,21 @@ public class Programa{
             tempoAnt = listaPaineis.get(indice-1).getPeriodo().getAte();
         }
         for(int i = indice + 1; i<listaPaineis.size(); i++){
-             periodo = listaPaineis.get(i).getPeriodo();
+             painel = listaPaineis.get(i);
+             periodo = painel.getPeriodo();
              tempo = periodo.getDuracao();
              periodo.setAte(tempo+tempoAnt);
-             JLabel teste = periodo.labelAte;
-             teste.setText(Conversor.longToString2(periodo.getAte()));
+             JLabel teste = painel.getLabelAte();
+             teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
              tempoAnt = periodo.getAte();
         }
         
         this.ate = periodo.getAte();
-        this.labelAte.setText(Conversor.longToString1(this.ate));
+        this.labelAte.setText(Utils.longToString1(this.ate));
         this.duracao = this.ate - this.inicio;
         if(this.duracao<=359999){
-            this.labelDuracao.setText(Conversor.longToString1Duracao(this.duracao));
+            this.labelDuracao.setText(Utils.longToString1Duracao(this.duracao));
         }else{
            this.labelDuracao.setText("--:--:--");
         }
@@ -170,6 +179,30 @@ public class Programa{
         relInicioThread.interrupt();
         inicio = inicioVelho;
         atualiza(null);
-        inicioTempo.setText(Conversor.longToString1(inicio));
+        inicioTempo.setText(Utils.longToString1(inicio));
+    }
+    
+    public void finalizaProgramacao(){
+        long inicioProgramado;
+        if(relInicioThread != null && !relInicioThread.isInterrupted()){
+            relInicioThread.interrupt();
+            inicioProgramado =-1;
+        }else{
+            inicioProgramado = inicio;
+        }
+        LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
+        this.cronometro.programaCronometro(listaPeriodos, inicioProgramado);
+    }
+    
+    private LinkedList<Periodo> fazListaPeriodos(){
+        LinkedList<Periodo> retorno = new LinkedList<>();
+        for(Painel p : listaPaineis){
+            p.finalizaPainel();
+            if(p.getPeriodo().getDuracao() == 0){
+                continue;
+            }
+            retorno.add(p.getClonePeriodo());
+        }
+        return retorno;
     }
 }

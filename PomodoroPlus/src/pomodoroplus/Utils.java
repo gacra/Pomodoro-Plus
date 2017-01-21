@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
  * Classe de métodos abstratos de conversão.
  * @author Guilherme
  */
-public class Conversor{
+public class Utils{
     
     /**
     * Converte uma string no formato 00:00:00 no tempo correspondente em segundos.

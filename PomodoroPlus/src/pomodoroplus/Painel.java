@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -47,7 +50,7 @@ public class Painel extends javax.swing.JPanel{
         this.programa = programa;
         initComponents();
         janelaPric.incCont();
-        periodo = new Periodo(janelaPric.getCont(), this.labelAte);
+        periodo = new Periodo(janelaPric.getCont());
         programa.getConjPeriodos().add(this);
         programa.atualiza(this);
         pronto = true;
@@ -200,7 +203,7 @@ public class Painel extends javax.swing.JPanel{
         long tempo;
         String texto = campoDuracao.getText();
         if(texto.length() == 14 && pronto){
-            tempo = Conversor.string2ToLong(texto);
+            tempo = Utils.string2ToLong(texto);
             periodo.setDuracao(tempo);
             programa.atualiza(this);
         }
@@ -214,7 +217,7 @@ public class Painel extends javax.swing.JPanel{
 
     private void insereExcluiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insereExcluiActionPerformed
         if(this.incluido == false){ //Insersão
-            if(!Conversor.testeZero(this.campoDuracao.getText())){
+            if(!Utils.testeZero(this.campoDuracao.getText())){
                 ajustaPainel();
                 criaNovoPainel();
                 this.incluido = true;
@@ -227,7 +230,7 @@ public class Painel extends javax.swing.JPanel{
     }//GEN-LAST:event_insereExcluiActionPerformed
 
     private void campoDuracaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoDuracaoFocusLost
-        campoDuracao.setText(Conversor.longToString2(periodo.getDuracao()));
+        campoDuracao.setText(Utils.longToString2(periodo.getDuracao()));
     }//GEN-LAST:event_campoDuracaoFocusLost
 
     /**
@@ -255,6 +258,9 @@ public class Painel extends javax.swing.JPanel{
         novoPainel.getNomePeriodo().requestFocus();
     }
     
+    /**
+     * Remove um painel, bem como o seu período correspondente da lista.
+     */
     private void removePainel(){
         this.programa.atualizaExclusao(this);
         this.programa.getConjPeriodos().remove(this);
@@ -272,7 +278,26 @@ public class Painel extends javax.swing.JPanel{
         return nomePeriodo;
     }
 
+    public JLabel getLabelAte(){
+        return labelAte;
+    }
     
+    public void finalizaPainel(){
+        if(this.nomePeriodoUsado){
+            this.periodo.setNome(this.nomePeriodo.getText());
+        }else{
+            this.periodo.setNome("Período");
+        }
+    }
+    
+    public Periodo getClonePeriodo(){
+        try{
+            return (Periodo) this.periodo.clone();
+        }catch(CloneNotSupportedException ex){
+            Logger.getLogger(Painel.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ate;
