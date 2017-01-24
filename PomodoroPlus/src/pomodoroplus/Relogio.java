@@ -23,6 +23,7 @@ public class Relogio{
     }
 
     public long getHorario(){
+        atualizaRelogio();
         return horario;
     }    
 }

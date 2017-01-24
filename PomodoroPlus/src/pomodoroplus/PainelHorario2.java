@@ -5,6 +5,8 @@
  */
 package pomodoroplus;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Guilherme
@@ -28,12 +30,12 @@ public class PainelHorario2 extends javax.swing.JPanel{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        horMinSeg = new javax.swing.JLabel();
+        minSeg = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(238, 241, 246));
 
-        horMinSeg.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
-        horMinSeg.setText("00:00");
+        minSeg.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
+        minSeg.setText("00:00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -41,19 +43,22 @@ public class PainelHorario2 extends javax.swing.JPanel{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(horMinSeg)
+                .addComponent(minSeg)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(horMinSeg, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(minSeg, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
+    public JLabel getMinSeg(){
+        return minSeg;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel horMinSeg;
+    private javax.swing.JLabel minSeg;
     // End of variables declaration//GEN-END:variables
 }

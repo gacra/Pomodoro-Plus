@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -49,6 +50,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     public JanelaPrincipal(){
         
         initComponents();
+        painelHorario1 = new PainelHorario1();
+        painelHorario2 = new PainelHorario2();
         
         cronometro = new Cronometro(this);
         
@@ -62,19 +65,13 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         Painel novoPainel = new Painel(programaPanel, programaRolagem, this, programa);
         programaPanel.add(novoPainel);
         programaPanel.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programaPanel.getLayout()).getVgap()))));
-        
-        //Teste
-        tabela.setValueAt("123456789012345678901", 0, 0);
-        tabela.setValueAt("00:00:00", 0, 1);
-        tabela.setValueAt("00:00:00", 0, 2);
-        tabela.setValueAt("00:00:00", 0, 3);        
-        
+         
         //Iniciando painel do cronômetro
+        System.out.println(painelHorario2.getMinSeg());
         FlowLayout layout2 = new FlowLayout();  
         suporteHorario.setLayout(layout2);
         layout2.setAlignment(FlowLayout.LEFT);  
-        suporteHorario.add(new PainelHorario1());
-        //suporteHorario.setPreferredSize(new Dimension(480,230));
+        suporteHorario.add(painelHorario1);
         
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Figuras/icone.png"));
         this.setIconImage(iconeTitulo);
@@ -152,37 +149,10 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         tabela.setForeground(new java.awt.Color(255, 255, 255));
         tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Nome do período", "Duração", "Início", "Até"
+                "Nome do período", "Duração", "Pausa", "Até"
             }
         ) {
             Class[] types = new Class [] {
@@ -222,7 +192,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         tabela.getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));
         tabela.getTableHeader().setFont(new java.awt.Font("Verdana", 0, 16));
         //Retirando a borda da tabela
-        tabelaRolagem.getViewport().setBackground(Color.WHITE);
+        tabelaRolagem.getViewport().setBackground(new java.awt.Color(2, 24, 43));
         //Mudando a cor da parte da tabela sem linhas
         tabelaRolagem.setBorder(createEmptyBorder());
         //Centralizando
@@ -762,9 +732,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
     private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
         this.iniciarAgora.setSelected(false);
-        this.programa.finalizaProgramacao();
-        this.inicioTempo.setEditable(true);
-        this.inicioTempo.setFocusable(true);
+        if(this.programa.finalizaProgramacao()){
+            this.inicioTempo.setEditable(true);
+            this.inicioTempo.setFocusable(true);
+            this.guias.setSelectedIndex(0);
+        }
     }//GEN-LAST:event_iniciarActionPerformed
 
     public int getCont(){
@@ -785,6 +757,18 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
     public JButton getPausaCont(){
         return pausaCont;
+    }
+
+    public JPanel getSuporteHorario(){
+        return suporteHorario;
+    }
+
+    public PainelHorario1 getPainelHorario1(){
+        return painelHorario1;
+    }
+
+    public PainelHorario2 getPainelHorario2(){
+        return painelHorario2;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -824,6 +808,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private javax.swing.JTable tabela;
     private javax.swing.JScrollPane tabelaRolagem;
     // End of variables declaration//GEN-END:variables
+    private PainelHorario1 painelHorario1;
+    private PainelHorario2 painelHorario2;
 }
 
 class TableHeaderRenderer implements TableCellRenderer{

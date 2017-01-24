@@ -190,6 +190,10 @@ public class Painel extends javax.swing.JPanel{
     }//GEN-LAST:event_nomePeriodoFocusGained
 
     private void nomePeriodoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nomePeriodoFocusLost
+        nomePeriodoFocoPerdido();
+    }//GEN-LAST:event_nomePeriodoFocusLost
+
+    private void nomePeriodoFocoPerdido(){
         if(nomePeriodo.getText().contentEquals("")){
             nomePeriodo.setText("Nome do Período");
             nomePeriodo.setForeground(new java.awt.Color(102, 102, 102));
@@ -197,8 +201,8 @@ public class Painel extends javax.swing.JPanel{
         }else{
             nomePeriodoUsado = true;
         }
-    }//GEN-LAST:event_nomePeriodoFocusLost
-
+    }
+    
     private void campoDuracaoCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_campoDuracaoCaretUpdate
         long tempo;
         String texto = campoDuracao.getText();
@@ -283,6 +287,9 @@ public class Painel extends javax.swing.JPanel{
     }
     
     public void finalizaPainel(){
+        if(nomePeriodo.isFocusOwner()){
+            nomePeriodoFocoPerdido();
+        }
         if(this.nomePeriodoUsado){
             this.periodo.setNome(this.nomePeriodo.getText());
         }else{

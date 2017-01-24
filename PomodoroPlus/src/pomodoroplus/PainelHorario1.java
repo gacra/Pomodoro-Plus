@@ -5,6 +5,8 @@
  */
 package pomodoroplus;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Guilherme
@@ -69,7 +71,14 @@ public class PainelHorario1 extends javax.swing.JPanel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public JLabel getHorMin(){
+        return horMin;
+    }
 
+    public JLabel getSeg(){
+        return seg;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel horMin;
     private javax.swing.JLabel jLabel10;

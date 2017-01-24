@@ -107,6 +107,63 @@ public class Utils{
     }
     
      /**
+     * Converte um tempo em segundos (long) para uma string no formato HH:MM, mostrando apenas as horas e os minutos.
+     * @param tempo Tempo em segundos (long).
+     * @return String no formato HH:MM.
+     */
+    static String longToHoraMin(long tempo){
+        String retorno;
+        long aux, min, hora;
+
+        aux = tempo/60;
+        
+        min = aux%60;
+        aux = aux/60;
+        
+        hora = aux%24;
+        
+        DecimalFormat formato = new DecimalFormat("00");
+        retorno = formato.format(hora) + ":" + formato.format(min);
+        return retorno;
+    }
+    
+     /**
+     * Converte um tempo em segundos (long) para uma string no formato :SS, mostrando apenas os segundos.
+     * @param tempo Tempo em segundos (long).
+     * @return String no formato SS.
+     */
+    static String longToSeg(long tempo){
+        String retorno;
+        long seg;
+        
+        seg = tempo%60;
+        
+        DecimalFormat formato = new DecimalFormat("00");
+        retorno = ":" + formato.format(seg);
+        return retorno;
+    }
+    
+     /**
+     * Converte um tempo em segundos (long) para uma string no formato MM:SS, mostrando apenas os minutos e os segundos.
+     * @param tempo Tempo em segundos (long), que seja menor que 1 hora (ou 3600 segundos).
+     * @return String no formato MM:SS.
+     */
+    static String longToMinSeg(long tempo){
+        String retorno;
+        long aux, seg, min;
+        
+        seg = tempo%60;
+        aux = tempo/60;
+        
+        min = aux%60;
+        aux = aux/60;
+        
+        DecimalFormat formato = new DecimalFormat("00");
+        retorno = formato.format(min) + ":" + formato.format(seg);
+        return retorno;
+    }
+    
+     /**
      * Converte um tempo em segundos (long) para uma string no formato 00:00:00 com as horas indo até 99.
      * @param tempo Tempo em segundos (long).
      * @return String no formato 00:00:00.
@@ -167,6 +224,21 @@ public class Utils{
             return true;
         }else{
             return false;
+        }
+    }
+    
+    
+    /**
+     * Calcula diferença de tempo entre a hora atual e uma hora qualquer.
+     * @param horaAtual Hora (em segundos) atual do sistema.
+     * @param hora Hora (em segundos).
+     * @return Diferença (em segundos).
+     */
+    static long diferenca(long horaAtual, long hora){
+        if(horaAtual <= hora){
+            return hora - horaAtual;
+        }else{
+            return (hora + 86400) - horaAtual;
         }
     }
 }

@@ -212,10 +212,10 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="4" rowCount="28">
+                              <Table columnCount="4" rowCount="0">
                                 <Column editable="false" title="Nome do per&#xed;odo" type="java.lang.String"/>
                                 <Column editable="false" title="Dura&#xe7;&#xe3;o" type="java.lang.String"/>
-                                <Column editable="false" title="In&#xed;cio" type="java.lang.String"/>
+                                <Column editable="false" title="Pausa" type="java.lang.String"/>
                                 <Column editable="false" title="At&#xe9;" type="java.lang.String"/>
                               </Table>
                             </Property>
@@ -258,7 +258,7 @@
                             </Property>
                           </Properties>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//Mudan&#xe7;a de cor e fonte do cabe&#xe7;alho, bem como tirar as suas bordas&#xa;tabela.getTableHeader().setBackground(new java.awt.Color(2, 24, 43));&#xa;tabela.getTableHeader().setForeground(new java.awt.Color(255,89,81));&#xa;tabela.getTableHeader().setResizingAllowed(false);&#xa;TableCellRenderer baseRenderer = tabela.getTableHeader().getDefaultRenderer();&#xa;tabela.getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));&#xa;tabela.getTableHeader().setFont(new java.awt.Font(&quot;Verdana&quot;, 0, 16));&#xa;//Retirando a borda da tabela&#xa;tabelaRolagem.getViewport().setBackground(Color.WHITE);&#xa;//Mudando a cor da parte da tabela sem linhas&#xa;tabelaRolagem.setBorder(createEmptyBorder());&#xa;//Centralizando &#xa;TableColumnModel model = tabela.getColumnModel();&#xa;model.getColumn(0).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(1).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(2).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(3).setCellRenderer(new LinhaEscolhida(this));&#xa;&#xa;//DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;//centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;//centerRenderer.setVerticalAlignment ( JLabel.CENTER );&#xa;//tabela.setDefaultRenderer(String.class, centerRenderer);"/>
+                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//Mudan&#xe7;a de cor e fonte do cabe&#xe7;alho, bem como tirar as suas bordas&#xa;tabela.getTableHeader().setBackground(new java.awt.Color(2, 24, 43));&#xa;tabela.getTableHeader().setForeground(new java.awt.Color(255,89,81));&#xa;tabela.getTableHeader().setResizingAllowed(false);&#xa;TableCellRenderer baseRenderer = tabela.getTableHeader().getDefaultRenderer();&#xa;tabela.getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));&#xa;tabela.getTableHeader().setFont(new java.awt.Font(&quot;Verdana&quot;, 0, 16));&#xa;//Retirando a borda da tabela&#xa;tabelaRolagem.getViewport().setBackground(new java.awt.Color(2, 24, 43));&#xa;//Mudando a cor da parte da tabela sem linhas&#xa;tabelaRolagem.setBorder(createEmptyBorder());&#xa;//Centralizando &#xa;TableColumnModel model = tabela.getColumnModel();&#xa;model.getColumn(0).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(1).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(2).setCellRenderer(new LinhaEscolhida(this));&#xa;model.getColumn(3).setCellRenderer(new LinhaEscolhida(this));&#xa;&#xa;//DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;//centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;//centerRenderer.setVerticalAlignment ( JLabel.CENTER );&#xa;//tabela.setDefaultRenderer(String.class, centerRenderer);"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>

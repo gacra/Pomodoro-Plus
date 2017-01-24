@@ -16,15 +16,26 @@ public class Periodo implements Cloneable{
     //Hora (em segundos) que o período acaba
     private long ate;
 
+     /**
+     * Cria um objeto Periodo.
+     * @param numero Número do período.
+     * @param nome Nome do período
+     * @param duracao Duração (em segundos) do período
+     * @param ate Hora (em segundos) que o período acaba
+     */
+    public Periodo(int numero, String nome, long duracao, long ate){
+        this.numero = numero;
+        this.nome = nome;
+        this.duracao = duracao;
+        this.ate = ate;
+    }
+    
     /**
      * Cria um objeto Periodo.
      * @param numero Número do período.
-     * @param labelAte Referência para a Label Ate da janela principal.
      */
     public Periodo(int numero){
-        this.numero = numero;
-        duracao = 0;
-        ate = 0;
+        this(numero, null, 0, 0);
     }
     
     public long getDuracao(){
@@ -35,6 +46,10 @@ public class Periodo implements Cloneable{
         return ate;
     }
 
+    public String getNome(){
+        return nome;
+    }
+    
     public void setNome(String nome){
         this.nome = nome;
     }

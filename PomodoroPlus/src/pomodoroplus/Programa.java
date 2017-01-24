@@ -182,7 +182,7 @@ public class Programa{
         inicioTempo.setText(Utils.longToString1(inicio));
     }
     
-    public void finalizaProgramacao(){
+    public boolean finalizaProgramacao(){
         long inicioProgramado;
         if(relInicioThread != null && !relInicioThread.isInterrupted()){
             relInicioThread.interrupt();
@@ -191,7 +191,11 @@ public class Programa{
             inicioProgramado = inicio;
         }
         LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
+        if(listaPeriodos.size() == 0){
+            return false;
+        }
         this.cronometro.programaCronometro(listaPeriodos, inicioProgramado);
+        return true;
     }
     
     private LinkedList<Periodo> fazListaPeriodos(){
