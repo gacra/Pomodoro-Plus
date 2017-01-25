@@ -9,6 +9,7 @@ import javax.swing.JPanel;
  */
 public class Regressivo extends Relogio implements Runnable{
     LinkedList<Periodo> listaPeriodos;
+    JanelaPrincipal janelaPrinc;
     JPanel suporteHorario;
     PainelHorario1 painelHorario1;
     PainelHorario2 painelHorario2;
@@ -16,33 +17,41 @@ public class Regressivo extends Relogio implements Runnable{
     boolean qualPainel;
     long tempo;
     
-    public Regressivo(LinkedList<Periodo> listaPeriodos, JPanel suporteHorario, PainelHorario1 painelHorario1, PainelHorario2 painelHorario2){
-        this.listaPeriodos = listaPeriodos;
-        this.suporteHorario = suporteHorario;
-        this.painelHorario1 = painelHorario1;
-        this.painelHorario2 = painelHorario2;
-        System.out.println(painelHorario2);
+    public Regressivo(JanelaPrincipal janelaPrinc){
+        this.janelaPrinc = janelaPrinc;
+        this.suporteHorario = janelaPrinc.getSuporteHorario();
+        this.painelHorario1 = janelaPrinc.getPainelHorario1();
+        this.painelHorario2 = janelaPrinc.getPainelHorario2();
         this.qualPainel = true;
+    }
+
+    public void setListaPeriodos(LinkedList<Periodo> listaPeriodos){
+        this.listaPeriodos = listaPeriodos;
     }
     
     @Override
     public void run(){
         long ate;
         
+        janelaPrinc.voltaLinha();
+        
         for(Periodo p : listaPeriodos){
+            janelaPrinc.incLinha();
             ate = p.getAte();
             
-            while(true){                
+            while(!Thread.interrupted()){   
                 try{
                     Thread.sleep(100);
+                    atualizaRelogio();
+                    tempo = Utils.diferenca(horario, ate);
+                    atualizaMostrador();
+                    if(tempo == 0 || tempo > p.getDuracao()){
+                       Thread.sleep(400);
+                       this.janelaPrinc.getAudio().play();
+                       break;
+                    }
                 }catch(InterruptedException ex){
                     return;
-                }
-                atualizaRelogio();
-                tempo = Utils.diferenca(horario, ate);
-                atualizaMostrador();
-                if(tempo == 0 || tempo > p.getDuracao()){
-                    break;
                 }
             }
         }
@@ -50,10 +59,12 @@ public class Regressivo extends Relogio implements Runnable{
 
     private void atualizaMostrador(){
         if(tempo>=3600){    //Mais que 1 hora
+            System.out.println("Mais q uma hora");
             if(!qualPainel){
                 suporteHorario.removeAll();
                 suporteHorario.add(painelHorario1);
                 suporteHorario.updateUI();
+                qualPainel = true;
             }
             painelHorario1.getHorMin().setText(Utils.longToHoraMin(tempo));
             painelHorario1.getSeg().setText(Utils.longToSeg(tempo));
@@ -62,8 +73,8 @@ public class Regressivo extends Relogio implements Runnable{
                 suporteHorario.removeAll();
                 suporteHorario.add(painelHorario2);
                 suporteHorario.updateUI();
+                qualPainel = false;
             }
-            System.out.println(painelHorario2.getMinSeg());
             painelHorario2.getMinSeg().setText(Utils.longToMinSeg(tempo));
         }
     }

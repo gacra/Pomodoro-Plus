@@ -27,7 +27,7 @@ public class RelInicio extends Relogio implements Runnable{
      */
     @Override
     public void run(){
-        while(true && !Thread.interrupted()){            
+        while(!Thread.interrupted()){            
             try{
                 Thread.sleep(250);
             }catch(InterruptedException ex){

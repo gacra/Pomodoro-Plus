@@ -247,9 +247,6 @@
                             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="0" green="0" red="ff" type="rgb"/>
                             </Property>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[60, 0]"/>
-                            </Property>
                             <Property name="rowHeight" type="int" value="30"/>
                             <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                             <Property name="showVerticalLines" type="boolean" value="false"/>

@@ -107,7 +107,7 @@ public class Programa{
              painel = listaPaineis.get(i);
              periodo = painel.getPeriodo();
              tempo = periodo.getDuracao();
-             periodo.setAte(tempo+tempoAnt);
+             periodo.setAte((tempo+tempoAnt)%86400); //Para não passar de 24h
              JLabel teste = painel.getLabelAte();
              teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
@@ -146,7 +146,7 @@ public class Programa{
              painel = listaPaineis.get(i);
              periodo = painel.getPeriodo();
              tempo = periodo.getDuracao();
-             periodo.setAte(tempo+tempoAnt);
+             periodo.setAte((tempo+tempoAnt)%86400); //Para não passar de 24h
              JLabel teste = painel.getLabelAte();
              teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
@@ -184,7 +184,7 @@ public class Programa{
     
     public boolean finalizaProgramacao(){
         long inicioProgramado;
-        if(relInicioThread != null && !relInicioThread.isInterrupted()){
+        if(relInicioThread != null && relInicioThread.isAlive()){
             relInicioThread.interrupt();
             inicioProgramado =-1;
         }else{

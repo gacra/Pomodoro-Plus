@@ -14,25 +14,20 @@ public class Cronometro{
     private LinkedList<Periodo> listaPeriodos;
     private long inicioProgramado;
     private JTable tabela;
-    private JPanel suporteHorario;
-    private PainelHorario1 painelHorario1;
-    private PainelHorario2 painelHorario2;
     private JButton botao;
     private Regressivo regressivo;
+    private Thread regressivoThread = null;
 
     public Cronometro(JanelaPrincipal janelaPrinc){
         this.tabela = janelaPrinc.getTabela();
         this.botao = janelaPrinc.getPausaCont();
-        this.suporteHorario = janelaPrinc.getSuporteHorario();
-        this.painelHorario1 = janelaPrinc.getPainelHorario1();
-        this.painelHorario2 = janelaPrinc.getPainelHorario2();
-        System.out.println();
+        this.regressivo = new Regressivo(janelaPrinc);
     }
     
     public void programaCronometro(LinkedList<Periodo> listaPeriodos, long inicioProgramado){
         this.listaPeriodos = listaPeriodos;
         this.inicioProgramado = inicioProgramado;
-        this.regressivo = new Regressivo(listaPeriodos, suporteHorario, painelHorario1, painelHorario2);
+        this.regressivo.setListaPeriodos(listaPeriodos);
         avaliaInicio();
         escreveTabela();
         iniciaRegressivo();
@@ -70,7 +65,10 @@ public class Cronometro{
     }
 
     private void iniciaRegressivo(){
-        Thread regressivoThread = new Thread(regressivo);
+        if(regressivoThread !=null && regressivoThread.isAlive()){
+            regressivoThread.interrupt();
+        }
+        regressivoThread = new Thread(regressivo);
         regressivoThread.start();
     }
     

@@ -1,6 +1,8 @@
 
 package pomodoroplus;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.net.URL;
 import java.text.ParseException;
 import javax.swing.AbstractButton;
 import static javax.swing.BorderFactory.createEmptyBorder;
@@ -38,16 +41,21 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     //Se o som está ativado ou não
     private boolean som = true;
     //Número de linhas na tabela
-    public Integer linha = 0;
+    public Integer linha = -1;
     //Objeto Cronômetro regressivo para 1ª tela
     private Cronometro cronometro;    
     //Objeto Programa (conjunto de períodos de tempo)
     private Programa programa;
+    //Som do alarme
+    private AudioClip audio;
     
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal(){
+        
+        URL url = getClass().getResource("/Sons/Som1.wav");
+        this.audio = Applet.newAudioClip(url);
         
         initComponents();
         painelHorario1 = new PainelHorario1();
@@ -67,7 +75,6 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         programaPanel.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programaPanel.getLayout()).getVgap()))));
          
         //Iniciando painel do cronômetro
-        System.out.println(painelHorario2.getMinSeg());
         FlowLayout layout2 = new FlowLayout();  
         suporteHorario.setLayout(layout2);
         layout2.setAlignment(FlowLayout.LEFT);  
@@ -675,22 +682,15 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }// </editor-fold>//GEN-END:initComponents
 
     private void pausaContActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaContActionPerformed
-        suporteHorario.removeAll();
         if(pausado == true){
-            suporteHorario.add(new PainelHorario2());
             pausaCont.setText(" Pausar");
             pausaCont.setIcon(new ImageIcon(getClass().getResource("/Figuras/pause.png")));
             pausado = false;
         }else{
-            suporteHorario.add(new PainelHorario1());
             pausaCont.setText(" Continuar");
             pausaCont.setIcon(new ImageIcon(getClass().getResource("/Figuras/play.png")));
             pausado = true;
         }
-        suporteHorario.updateUI();
-        linha++;
-        System.out.println(linha);
-        tabela.updateUI();
     }//GEN-LAST:event_pausaContActionPerformed
 
     private void escolheSomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_escolheSomMouseClicked
@@ -739,6 +739,16 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_iniciarActionPerformed
 
+    public void incLinha(){
+        linha ++;
+        tabela.updateUI();
+    }
+    
+    public void voltaLinha(){
+        linha = -1;
+        tabela.updateUI();
+    }
+    
     public int getCont(){
         return cont;
     }
@@ -769,6 +779,10 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
     public PainelHorario2 getPainelHorario2(){
         return painelHorario2;
+    }
+
+    public AudioClip getAudio(){
+        return audio;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
