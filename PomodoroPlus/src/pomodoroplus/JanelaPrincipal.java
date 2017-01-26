@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.AbstractButton;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.ImageIcon;
@@ -47,15 +49,21 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     //Objeto Programa (conjunto de períodos de tempo)
     private Programa programa;
     //Som do alarme
-    private AudioClip audio;
+    private ArrayList<AudioClip> audioVector;
+    //Qual o índice do alarme escolhido
+    private int indiceAlarme = 0;
     
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal(){
         
-        URL url = getClass().getResource("/Sons/Som1.wav");
-        this.audio = Applet.newAudioClip(url);
+        this.audioVector = new ArrayList<>();
+        for(int i = 1; i <=5; i++){
+           URL url = getClass().getResource("/Sons/Som" + i +".wav");
+           this.audioVector.add(Applet.newAudioClip(url)); 
+        }
+        
         
         initComponents();
         painelHorario1 = new PainelHorario1();
@@ -179,7 +187,6 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         });
         tabela.setFocusable(false);
         tabela.setGridColor(new java.awt.Color(255, 0, 0));
-        tabela.setMinimumSize(new java.awt.Dimension(60, 0));
         tabela.setRowHeight(30);
         tabela.setRowSelectionAllowed(false);
         tabela.setShowVerticalLines(false);
@@ -282,7 +289,12 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         );
 
         selectSom.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        selectSom.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Som 1", "Som 2", "Som 3", "Som 4" }));
+        selectSom.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Som 1", "Som 2", "Som 3", "Som 4", "Som 5" }));
+        selectSom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectSomActionPerformed(evt);
+            }
+        });
 
         escolheSom.setBackground(new java.awt.Color(238, 241, 246));
         escolheSom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/sino.png"))); // NOI18N
@@ -685,11 +697,14 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         if(pausado == true){
             pausaCont.setText(" Pausar");
             pausaCont.setIcon(new ImageIcon(getClass().getResource("/Figuras/pause.png")));
+            cronometro.continuar();
             pausado = false;
         }else{
+            if(cronometro.pausar()){
             pausaCont.setText(" Continuar");
             pausaCont.setIcon(new ImageIcon(getClass().getResource("/Figuras/play.png")));
             pausado = true;
+            }
         }
     }//GEN-LAST:event_pausaContActionPerformed
 
@@ -739,6 +754,10 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_iniciarActionPerformed
 
+    private void selectSomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSomActionPerformed
+        this.indiceAlarme = selectSom.getSelectedIndex();
+    }//GEN-LAST:event_selectSomActionPerformed
+
     public void incLinha(){
         linha ++;
         tabela.updateUI();
@@ -781,10 +800,18 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         return painelHorario2;
     }
 
-    public AudioClip getAudio(){
-        return audio;
+    public AudioClip getAudio(int indice){
+        return audioVector.get(indice);
     }
-    
+
+    public int getIndiceAlarme(){
+        return indiceAlarme;
+    }
+
+    public boolean isSom(){
+        return som;
+    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelProgFundo;
     private javax.swing.JLabel ajuda;

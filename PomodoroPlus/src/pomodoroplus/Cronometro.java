@@ -71,5 +71,18 @@ public class Cronometro{
         regressivoThread = new Thread(regressivo);
         regressivoThread.start();
     }
+
+    public boolean pausar(){
+        if(regressivoThread != null && regressivoThread.isAlive()){
+            regressivo.pausar();
+            return true;
+        }else{
+            return  false;
+        }
+    }
+
+    void continuar(){
+       regressivo.continuar();
+    }
     
 }

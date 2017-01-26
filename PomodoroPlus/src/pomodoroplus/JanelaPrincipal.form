@@ -387,14 +387,18 @@
                           <Font name="Verdana" size="16" style="0"/>
                         </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
+                          <StringArray count="5">
                             <StringItem index="0" value="Som 1"/>
                             <StringItem index="1" value="Som 2"/>
                             <StringItem index="2" value="Som 3"/>
                             <StringItem index="3" value="Som 4"/>
+                            <StringItem index="4" value="Som 5"/>
                           </StringArray>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectSomActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="escolheSom">
                       <Properties>
