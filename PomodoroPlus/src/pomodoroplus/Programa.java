@@ -1,8 +1,18 @@
 package pomodoroplus;
 
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
@@ -31,6 +41,8 @@ public class Programa{
     JFormattedTextField inicioTempo;
     //Referência para o Cronômetro ao qual será enviado a programação
     Cronometro cronometro;
+    //Janela Principla
+    private JanelaPrincipal janelaPrinc;
 
     /**
      * Cria novo objeto Programa
@@ -39,17 +51,25 @@ public class Programa{
      * @param inicioTempo Referência para o campo inicioTempo da Janela Principal
      * @param cronometro Referência para o Cronômetro ao qual será enviado a programação
      */
-    public Programa(JLabel labelDuracao, JLabel labelAte, JFormattedTextField inicioTempo, Cronometro cronometro){
+    public Programa(JLabel labelDuracao, JLabel labelAte, JFormattedTextField inicioTempo, Cronometro cronometro, JanelaPrincipal janelaPrinc){
         this.labelDuracao = labelDuracao;
         this.labelAte = labelAte;
-        inicio = 0;
-        inicioVelho = 0;
-        duracao = 0;
-        ate = 0;
         this.inicioTempo = inicioTempo;
         this.cronometro = cronometro;
+        this.janelaPrinc = janelaPrinc;
         listaPaineis = new LinkedList<>();
         relInicio = new RelInicio(this, inicioTempo);
+        
+        if(!avaliaAnterior()){
+            inicio = 0;
+            inicioVelho = 0;
+            duracao = 0;
+            ate = 0;
+            
+            Painel novoPainel = new Painel(janelaPrinc.getProgramaPanel(), janelaPrinc.getProgramaRolagem(), janelaPrinc, this);
+            janelaPrinc.getProgramaPanel().add(novoPainel);
+            janelaPrinc.getProgramaPanel().setPreferredSize(new Dimension(novoPainel.getWidth(),janelaPrinc.getCont()*(40+(((FlowLayout)janelaPrinc.getProgramaPanel().getLayout()).getVgap()))));
+        }
     }
 
     public long getInicio(){
@@ -182,7 +202,10 @@ public class Programa{
         inicioTempo.setText(Utils.longToString1(inicio));
     }
     
-    public boolean finalizaProgramacao(){
+    /**
+     * Finaliza a programação e envia a lista de períodos para o objeto Cronometro (1ª tela).
+     */
+    public synchronized boolean finalizaProgramacao(){
         long inicioProgramado;
         if(relInicioThread != null && relInicioThread.isAlive()){
             relInicioThread.interrupt();
@@ -194,10 +217,14 @@ public class Programa{
         if(listaPeriodos.size() == 0){
             return false;
         }
+        salvaArquivo(listaPeriodos, "Atual");
         this.cronometro.programaCronometro(listaPeriodos, inicioProgramado);
         return true;
     }
     
+    /**
+     * Monta a lista de períodos a partir da lista de Paineis
+     */
     private LinkedList<Periodo> fazListaPeriodos(){
         LinkedList<Periodo> retorno = new LinkedList<>();
         for(Painel p : listaPaineis){
@@ -209,4 +236,98 @@ public class Programa{
         }
         return retorno;
     }
+
+    /**
+     * Salva os períodos da programação em um arquivo.
+     * @param listaPeriodos Lista de períodos da programação.
+     */
+    private void salvaArquivo(LinkedList<Periodo> listaPeriodos, String nome){
+        ObjectOutputStream output;
+        File file;
+        
+        try{
+            file = new File("C:\\Pomodoro");
+            file.mkdir();
+            int i = 1;
+            String novoNome = nome;
+            while(new File("C:\\Pomodoro\\" + novoNome + ".pdp").exists()){
+                novoNome = nome + String.valueOf(i);
+                i++;
+            }
+            output = new ObjectOutputStream(new FileOutputStream("C:\\Pomodoro\\" + novoNome + ".pdp") );
+            output.writeObject(listaPeriodos);
+            output.close();
+        }catch(IOException ex){
+            System.err.println( "Erro em salvar o arquivo" + ex.getMessage() );
+            return;
+        }
+    }
+
+    /**
+     * Avalia se há um arquivo de um programa anterior e carrega tal programa
+     * @return True: Existe o arquivo / False: Não existe o arquivo
+     */
+    private boolean avaliaAnterior(){
+        ObjectInputStream input;
+        LinkedList<Periodo> listaPeriodos;
+        
+        try{
+            input = new ObjectInputStream(new FileInputStream("C:\\Pomodoro\\Atual.pdp") );
+            listaPeriodos = (LinkedList<Periodo>) input.readObject();
+            input.close();
+            mostraAnterior(listaPeriodos);
+            return true;
+        }catch(Exception ex){
+            System.err.println( "Não há arquivo." + ex.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Usa uma lista de Períodos presente em um arquivos para montar os Paineis correspondentes.
+     * @param  listaPeriodos Lista de Períodos
+     */
+    private void mostraAnterior(LinkedList<Periodo> listaPeriodos){
+        
+        //Limpeza
+        for(Painel pa: listaPaineis){
+            pa.removePainel();
+        }
+        
+        Periodo pe = listaPeriodos.get(0);
+        Painel novoPainel = new Painel(janelaPrinc.getProgramaPanel(), janelaPrinc.getProgramaRolagem(), janelaPrinc, this);
+        novoPainel.setPeriodo(pe);
+        janelaPrinc.getProgramaPanel().add(novoPainel);
+        janelaPrinc.getProgramaPanel().setPreferredSize(new Dimension(novoPainel.getWidth(),janelaPrinc.getCont()*(40+(((FlowLayout)janelaPrinc.getProgramaPanel().getLayout()).getVgap()))));
+        
+        for(int i = 1; i < listaPeriodos.size(); i++){
+            pe = listaPeriodos.get(i);
+            novoPainel.ajustaPainel();
+            novoPainel = novoPainel.criaNovoPainel();
+            novoPainel.setPeriodo(pe);
+            System.out.println("hey");
+        }
+        
+        novoPainel.ajustaPainel();
+        novoPainel = novoPainel.criaNovoPainel();
+    }
+    
+    /**
+     * Testa se todos os períodos do programa tem duração zero.
+     * @return True: O programa tem duração zero / False: O programa tem duração maior que zero.
+     */
+    public boolean testaVazio(){
+        for(Painel p : listaPaineis){
+            if(p.getPeriodo().getDuracao() != 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void salvaPrograma(String nome){
+        LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
+        salvaArquivo(listaPeriodos, nome);
+    }
+    
 }

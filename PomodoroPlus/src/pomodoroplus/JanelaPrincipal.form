@@ -754,8 +754,8 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="salvar" min="-2" max="-2" attributes="0"/>
                                       <Component id="carregar" min="-2" max="-2" attributes="0"/>
+                                      <Component id="salvar" min="-2" max="-2" attributes="0"/>
                                       <Component id="iniciar" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
@@ -768,9 +768,9 @@
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="iniciar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="carregar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
                                   <Component id="salvar" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="carregar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -803,7 +803,7 @@
                             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="iniciar.setUI(new UIBotao());"/>
                           </AuxValues>
                         </Component>
-                        <Component class="javax.swing.JButton" name="salvar">
+                        <Component class="javax.swing.JButton" name="carregar">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="2d" green="37" red="ff" type="rgb"/>
@@ -820,10 +820,10 @@
                             <Property name="focusable" type="boolean" value="false"/>
                           </Properties>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="salvar.setUI(new UIBotao());"/>
+                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="carregar.setUI(new UIBotao());"/>
                           </AuxValues>
                         </Component>
-                        <Component class="javax.swing.JButton" name="carregar">
+                        <Component class="javax.swing.JButton" name="salvar">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="2d" green="37" red="ff" type="rgb"/>
@@ -842,8 +842,11 @@
                               <Dimension value="[157, 35]"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="salvarActionPerformed"/>
+                          </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="carregar.setUI(new UIBotao());"/>
+                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="salvar.setUI(new UIBotao());"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>

@@ -13,7 +13,6 @@ import java.awt.Toolkit;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.AbstractButton;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.ImageIcon;
@@ -21,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -72,16 +72,18 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         cronometro = new Cronometro(this);
         
         //Iniciando painel de programação
-        programa = new Programa(duracaoTempo, ateTempo, inicioTempo, cronometro);
-        
         programaRolagem.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         FlowLayout layout = new FlowLayout();  
         programaPanel.setLayout(layout);
-        layout.setAlignment(FlowLayout.LEFT);      
+        layout.setAlignment(FlowLayout.LEFT); 
+        
+        programa = new Programa(duracaoTempo, ateTempo, inicioTempo, cronometro, this);
+        
+        /*     
         Painel novoPainel = new Painel(programaPanel, programaRolagem, this, programa);
         programaPanel.add(novoPainel);
         programaPanel.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programaPanel.getLayout()).getVgap()))));
-         
+        */
         //Iniciando painel do cronômetro
         FlowLayout layout2 = new FlowLayout();  
         suporteHorario.setLayout(layout2);
@@ -137,8 +139,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         ajudaAlt = new javax.swing.JLabel();
         botoes = new javax.swing.JPanel();
         iniciar = new javax.swing.JButton();
-        salvar = new javax.swing.JButton();
         carregar = new javax.swing.JButton();
+        salvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pomodoro Plus");
@@ -570,22 +572,27 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                 }
             });
 
-            salvar.setBackground(new java.awt.Color(255, 55, 45));
-            salvar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
-            salvar.setForeground(new java.awt.Color(255, 255, 255));
-            salvar.setText("CARREGAR");
-            salvar.setBorderPainted(false);
-            salvar.setFocusPainted(false);
-            salvar.setFocusable(false);
-
             carregar.setBackground(new java.awt.Color(255, 55, 45));
             carregar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
             carregar.setForeground(new java.awt.Color(255, 255, 255));
-            carregar.setText("SALVAR");
+            carregar.setText("CARREGAR");
             carregar.setBorderPainted(false);
             carregar.setFocusPainted(false);
             carregar.setFocusable(false);
-            carregar.setPreferredSize(new java.awt.Dimension(157, 35));
+
+            salvar.setBackground(new java.awt.Color(255, 55, 45));
+            salvar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+            salvar.setForeground(new java.awt.Color(255, 255, 255));
+            salvar.setText("SALVAR");
+            salvar.setBorderPainted(false);
+            salvar.setFocusPainted(false);
+            salvar.setFocusable(false);
+            salvar.setPreferredSize(new java.awt.Dimension(157, 35));
+            salvar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    salvarActionPerformed(evt);
+                }
+            });
 
             javax.swing.GroupLayout botoesLayout = new javax.swing.GroupLayout(botoes);
             botoes.setLayout(botoesLayout);
@@ -594,8 +601,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, botoesLayout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(salvar)
-                        .addComponent(carregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(carregar)
+                        .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(25, 25, 25))
             );
@@ -605,15 +612,15 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(carregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(salvar)
+                    .addComponent(carregar)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
             iniciar.setUI(new UIBotao());
-            salvar.setUI(new UIBotao());
             carregar.setUI(new UIBotao());
+            salvar.setUI(new UIBotao());
 
             javax.swing.GroupLayout PainelProgFundoLayout = new javax.swing.GroupLayout(PainelProgFundo);
             PainelProgFundo.setLayout(PainelProgFundoLayout);
@@ -714,6 +721,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             som = false;
         }else{
             escolheSom.setIcon(new ImageIcon(getClass().getResource("/Figuras/sino.png")));
+            audioVector.get(indiceAlarme).play();
             som = true;
         }
         
@@ -757,6 +765,13 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private void selectSomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectSomActionPerformed
         this.indiceAlarme = selectSom.getSelectedIndex();
     }//GEN-LAST:event_selectSomActionPerformed
+
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+        if(programa.testaVazio()){
+            Salvar salvarDialog = new Salvar(this, true, programa);
+            salvarDialog.setVisible(true);
+        }
+    }//GEN-LAST:event_salvarActionPerformed
 
     public void incLinha(){
         linha ++;
@@ -811,6 +826,16 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     public boolean isSom(){
         return som;
     }
+
+    public JPanel getProgramaPanel(){
+        return programaPanel;
+    }
+
+    public JScrollPane getProgramaRolagem(){
+        return programaRolagem;
+    }
+    
+    
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelProgFundo;

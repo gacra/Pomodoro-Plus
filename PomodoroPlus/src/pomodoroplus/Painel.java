@@ -199,6 +199,7 @@ public class Painel extends javax.swing.JPanel{
             nomePeriodo.setForeground(new java.awt.Color(102, 102, 102));
             nomePeriodoUsado = false;
         }else{
+            nomePeriodo.setForeground(Color.BLACK);
             nomePeriodoUsado = true;
         }
     }
@@ -224,7 +225,6 @@ public class Painel extends javax.swing.JPanel{
             if(!Utils.testeZero(this.campoDuracao.getText())){
                 ajustaPainel();
                 criaNovoPainel();
-                this.incluido = true;
             }else{
                 this.campoDuracao.requestFocus();
             }
@@ -240,7 +240,7 @@ public class Painel extends javax.swing.JPanel{
     /**
      *  Ajusta Painel para sua inclusão.
      */
-    private void ajustaPainel(){
+    public void ajustaPainel(){
         if(!this.nomePeriodoUsado){
             this.nomePeriodo.setText("Período " + String.valueOf(janelaPric.getCont()));
             this.nomePeriodo.setForeground(Color.black);
@@ -252,7 +252,7 @@ public class Painel extends javax.swing.JPanel{
     /**
     *   Cria um novo painel, ajustando o tamanho da janela.
     */
-    private void criaNovoPainel(){
+    public Painel criaNovoPainel(){
         Painel novoPainel = new Painel(janela, rolagem, janelaPric, programa);
         janela.setPreferredSize(new Dimension(novoPainel.getWidth(),janelaPric.getCont()*(40+(((FlowLayout)janela.getLayout()).getVgap()))));
         janela.setVisible(true);
@@ -260,12 +260,14 @@ public class Painel extends javax.swing.JPanel{
         janelaPric.setVisible(true);
         this.rolagem.getVerticalScrollBar().setValue(this.rolagem.getVerticalScrollBar().getMaximum());
         novoPainel.getNomePeriodo().requestFocus();
+        this.incluido = true;
+        return novoPainel;
     }
     
     /**
      * Remove um painel, bem como o seu período correspondente da lista.
      */
-    private void removePainel(){
+    public void removePainel(){
         this.programa.atualizaExclusao(this);
         this.programa.getConjPeriodos().remove(this);
         this.janela.remove(this);
@@ -304,6 +306,13 @@ public class Painel extends javax.swing.JPanel{
             Logger.getLogger(Painel.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public void setPeriodo(Periodo periodo){
+        this.periodo = periodo;
+        this.nomePeriodo.setText(periodo.getNome());
+        nomePeriodoFocoPerdido();
+        this.campoDuracao.setText(Utils.longToString2(periodo.getDuracao()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

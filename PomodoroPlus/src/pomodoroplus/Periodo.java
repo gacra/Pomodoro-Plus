@@ -1,12 +1,13 @@
 package pomodoroplus;
 
+import java.io.Serializable;
 import javax.swing.JLabel;
 
 /**
  * Classe que representa um período de tempo do Programa
  * @author Guilherme
  */
-public class Periodo implements Cloneable{
+public class Periodo implements Cloneable, Serializable{
     //Número do período
     private int numero;
     //Nome do período
