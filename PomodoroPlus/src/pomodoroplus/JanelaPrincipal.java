@@ -234,6 +234,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
         ajuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/help.png"))); // NOI18N
         ajuda.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ajuda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ajudaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout cabecalhoLayout = new javax.swing.GroupLayout(cabecalho);
         cabecalho.setLayout(cabecalhoLayout);
@@ -445,8 +450,6 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
             iniciarAgora.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
             iniciarAgora.setText("Iniciar agora");
-            iniciarAgora.setFocusPainted(false);
-            iniciarAgora.setFocusable(false);
             iniciarAgora.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     iniciarAgoraActionPerformed(evt);
@@ -526,6 +529,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             ajudaAlt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/help.png"))); // NOI18N
             ajudaAlt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
             ajudaAlt.setFocusable(false);
+            ajudaAlt.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    ajudaAltMouseClicked(evt);
+                }
+            });
 
             javax.swing.GroupLayout cabecalhoAltLayout = new javax.swing.GroupLayout(cabecalhoAlt);
             cabecalhoAlt.setLayout(cabecalhoAltLayout);
@@ -779,8 +787,18 @@ public class JanelaPrincipal extends javax.swing.JFrame{
 
     private void carregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carregarActionPerformed
         Carregar carregarDialog = new Carregar(this, true, programa);
-        carregarDialog.setVisible(som);
+        carregarDialog.setVisible(true);
     }//GEN-LAST:event_carregarActionPerformed
+
+    private void ajudaAltMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ajudaAltMouseClicked
+        Ajuda2 ajuda2 = new Ajuda2(this, true);
+        ajuda2.setVisible(true);
+    }//GEN-LAST:event_ajudaAltMouseClicked
+
+    private void ajudaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ajudaMouseClicked
+        Ajuda1 ajuda1 = new Ajuda1(this, true);
+        ajuda1.setVisible(true);
+    }//GEN-LAST:event_ajudaMouseClicked
 
     public void incLinha(){
         linha ++;

@@ -199,7 +199,7 @@ public class Programa{
         if(listaPeriodos.size() == 0){
             return false;
         }
-        salvaArquivo(listaPeriodos, "Atual");
+        salvaArquivo(listaPeriodos, "Atual", true);
         this.cronometro.programaCronometro(listaPeriodos, inicioProgramado);
         return true;
     }
@@ -250,7 +250,7 @@ public class Programa{
      * Salva os períodos da programação em um arquivo.
      * @param listaPeriodos Lista de períodos da programação.
      */
-    private void salvaArquivo(LinkedList<Periodo> listaPeriodos, String nome){
+    private void salvaArquivo(LinkedList<Periodo> listaPeriodos, String nome, boolean atual){
         ObjectOutputStream output;
         File file;
         
@@ -259,7 +259,7 @@ public class Programa{
             file.mkdir();
             int i = 1;
             String novoNome = nome;
-            while(new File("C:\\Pomodoro\\" + novoNome + ".pdp").exists()){
+            while((new File("C:\\Pomodoro\\" + novoNome + ".pdp").exists() || novoNome.equals("Atual"))&& !atual){
                 novoNome = nome + String.valueOf(i);
                 i++;
             }
@@ -341,7 +341,7 @@ public class Programa{
      */
     public void salvaPrograma(String nome){
         LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
-        salvaArquivo(listaPeriodos, nome);
+        salvaArquivo(listaPeriodos, nome, false);
     }
     
     /**

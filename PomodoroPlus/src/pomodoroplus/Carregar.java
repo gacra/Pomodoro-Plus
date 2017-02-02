@@ -21,7 +21,8 @@ public class Carregar extends javax.swing.JDialog{
         initComponents();
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Figuras/icone.png"));
         this.setIconImage(iconeTitulo);
-        
+        this.setTitle("Carregar cronograma");
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
     }
 
