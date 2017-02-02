@@ -1,11 +1,9 @@
-
 package pomodoroplus;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -37,7 +35,7 @@ import javax.swing.text.MaskFormatter;
 public class JanelaPrincipal extends javax.swing.JFrame{
     
     //Contador de quantos Paineis existem
-    private int cont =0;
+    private int cont = 0;
     //Se o contador regressivo está pausado ou não
     private boolean pausado = false;
     //Se o som está ativado ou não
@@ -58,41 +56,39 @@ public class JanelaPrincipal extends javax.swing.JFrame{
      */
     public JanelaPrincipal(){
         
+        //Cria o vetor de audios possíveis.
         this.audioVector = new ArrayList<>();
         for(int i = 1; i <=5; i++){
            URL url = getClass().getResource("/Sons/Som" + i +".wav");
            this.audioVector.add(Applet.newAudioClip(url)); 
         }
         
-        
+        //Inicia os componentes
         initComponents();
         painelHorario1 = new PainelHorario1();
         painelHorario2 = new PainelHorario2();
         
+        //Inicia o Cronometro (responsável pela 1ª tela)
         cronometro = new Cronometro(this);
         
-        //Iniciando painel de programação
+        //Iniciando painel de programação (2ª tela)
         programaRolagem.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         FlowLayout layout = new FlowLayout();  
         programaPanel.setLayout(layout);
         layout.setAlignment(FlowLayout.LEFT); 
         
+        //Inicia o Programa (responsável pela 2ª tela)
         programa = new Programa(duracaoTempo, ateTempo, inicioTempo, cronometro, this);
-        
-        /*     
-        Painel novoPainel = new Painel(programaPanel, programaRolagem, this, programa);
-        programaPanel.add(novoPainel);
-        programaPanel.setPreferredSize(new Dimension(novoPainel.getWidth(),cont*(40+(((FlowLayout)programaPanel.getLayout()).getVgap()))));
-        */
+
         //Iniciando painel do cronômetro
         FlowLayout layout2 = new FlowLayout();  
         suporteHorario.setLayout(layout2);
         layout2.setAlignment(FlowLayout.LEFT);  
         suporteHorario.add(painelHorario1);
         
+        //Configurações adicionais da JanelaPrincipal
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Figuras/icone.png"));
         this.setIconImage(iconeTitulo);
-        
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
@@ -579,6 +575,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             carregar.setBorderPainted(false);
             carregar.setFocusPainted(false);
             carregar.setFocusable(false);
+            carregar.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    carregarActionPerformed(evt);
+                }
+            });
 
             salvar.setBackground(new java.awt.Color(255, 55, 45));
             salvar.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
@@ -773,6 +774,11 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_salvarActionPerformed
 
+    private void carregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carregarActionPerformed
+        Carregar carregarDialog = new Carregar(this, true, programa);
+        carregarDialog.setVisible(som);
+    }//GEN-LAST:event_carregarActionPerformed
+
     public void incLinha(){
         linha ++;
         tabela.updateUI();
@@ -834,8 +840,6 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     public JScrollPane getProgramaRolagem(){
         return programaRolagem;
     }
-    
-    
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelProgFundo;
@@ -878,6 +882,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private PainelHorario2 painelHorario2;
 }
 
+//Classe para o latout da tabela
 class TableHeaderRenderer implements TableCellRenderer{
     private final TableCellRenderer baseRenderer;
 
@@ -893,6 +898,7 @@ class TableHeaderRenderer implements TableCellRenderer{
     }
 }
 
+//Classe para destacar a linha do período atual na tabela.
 class LinhaEscolhida extends DefaultTableCellRenderer {
     private JanelaPrincipal janela;
 
@@ -915,6 +921,7 @@ class LinhaEscolhida extends DefaultTableCellRenderer {
     }
 }
 
+//Classe para o layout dos botões.
 class UIBotao extends MetalButtonUI{
     
     @Override

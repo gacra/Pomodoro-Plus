@@ -1,29 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pomodoroplus;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.AbstractButton;
-import javax.swing.plaf.metal.MetalButtonUI;
 
 /**
- * Janela para salvar um programa.
+ * Janela para carregar um programa.
  * @author Guilherme
  */
-public class Salvar extends javax.swing.JDialog{
+public class Carregar extends javax.swing.JDialog{
 
     Programa programa;
     
     /**
      * Creates new form Salvar
+     * @param programa Referência para o objeto programa.
      */
-    public Salvar(java.awt.Frame parent, boolean modal, Programa programa){
+    public Carregar(java.awt.Frame parent, boolean modal, Programa programa){
         super(parent, modal);
         this.programa = programa;
         initComponents();
@@ -46,9 +38,10 @@ public class Salvar extends javax.swing.JDialog{
         painelCabecalho = new javax.swing.JPanel();
         simboloProg = new javax.swing.JLabel();
         salvarLabel = new javax.swing.JLabel();
-        campoNome = new javax.swing.JTextField();
-        botaoSalvar = new javax.swing.JButton();
+        botaoAbrir = new javax.swing.JButton();
         nomeLabel = new javax.swing.JLabel();
+        escolha = new javax.swing.JComboBox();
+        botaoExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,7 +52,7 @@ public class Salvar extends javax.swing.JDialog{
         simboloProg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Figuras/Tomate.png"))); // NOI18N
 
         salvarLabel.setFont(new java.awt.Font("Verdana", 1, 30)); // NOI18N
-        salvarLabel.setText("Salvar");
+        salvarLabel.setText("Carregar");
 
         javax.swing.GroupLayout painelCabecalhoLayout = new javax.swing.GroupLayout(painelCabecalho);
         painelCabecalho.setLayout(painelCabecalhoLayout);
@@ -82,27 +75,46 @@ public class Salvar extends javax.swing.JDialog{
                 .addContainerGap())
         );
 
-        campoNome.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        campoNome.addActionListener(new java.awt.event.ActionListener() {
+        botaoAbrir.setBackground(new java.awt.Color(255, 55, 45));
+        botaoAbrir.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        botaoAbrir.setForeground(new java.awt.Color(255, 255, 255));
+        botaoAbrir.setText("Abrir");
+        botaoAbrir.setBorderPainted(false);
+        botaoAbrir.setFocusPainted(false);
+        botaoAbrir.setPreferredSize(new java.awt.Dimension(101, 34));
+        botaoAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoNomeActionPerformed(evt);
-            }
-        });
-
-        botaoSalvar.setBackground(new java.awt.Color(255, 55, 45));
-        botaoSalvar.setFont(new java.awt.Font("Verdana", 0, 20)); // NOI18N
-        botaoSalvar.setForeground(new java.awt.Color(255, 255, 255));
-        botaoSalvar.setText("Salvar");
-        botaoSalvar.setBorderPainted(false);
-        botaoSalvar.setFocusPainted(false);
-        botaoSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoSalvarActionPerformed(evt);
+                botaoAbrirActionPerformed(evt);
             }
         });
 
         nomeLabel.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         nomeLabel.setText("Nome:");
+
+        escolha.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        escolha.setModel(new javax.swing.DefaultComboBoxModel(programa.listarSalvos()));
+        escolha.setMaximumRowCount(10);
+        escolha.setMaximumSize(new java.awt.Dimension(378, 29));
+        escolha.setMinimumSize(new java.awt.Dimension(378, 29));
+        escolha.setPreferredSize(new java.awt.Dimension(378, 29));
+        if(escolha.getItemCount()==0){
+            escolha.setEnabled(false);
+            botaoAbrir.setEnabled(false);
+            botaoExcluir.setEnabled(false);
+            escolha.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Não há programas salvos."}));
+        }
+
+        botaoExcluir.setBackground(new java.awt.Color(255, 55, 45));
+        botaoExcluir.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        botaoExcluir.setForeground(new java.awt.Color(255, 255, 255));
+        botaoExcluir.setText("Excluir");
+        botaoExcluir.setBorderPainted(false);
+        botaoExcluir.setFocusPainted(false);
+        botaoExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelFundoLayout = new javax.swing.GroupLayout(painelFundo);
         painelFundo.setLayout(painelFundoLayout);
@@ -110,17 +122,22 @@ public class Salvar extends javax.swing.JDialog{
             painelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(painelCabecalho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(painelFundoLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(painelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(campoNome)
                     .addGroup(painelFundoLayout.createSequentialGroup()
-                        .addComponent(nomeLabel)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(painelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(painelFundoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(nomeLabel))
+                            .addGroup(painelFundoLayout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(botaoAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(67, 67, 67)
+                                .addComponent(botaoExcluir)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(painelFundoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(escolha, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(painelFundoLayout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(botaoSalvar)
-                .addContainerGap(147, Short.MAX_VALUE))
         );
         painelFundoLayout.setVerticalGroup(
             painelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,19 +147,22 @@ public class Salvar extends javax.swing.JDialog{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(nomeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botaoSalvar)
+                .addComponent(escolha, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addGroup(painelFundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoExcluir))
                 .addContainerGap())
         );
 
-        botaoSalvar.setUI(new UIBotao());
+        botaoAbrir.setUI(new UIBotao());
+        botaoAbrir.setUI(new UIBotao());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(painelFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(painelFundo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,19 +172,24 @@ public class Salvar extends javax.swing.JDialog{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        programa.salvaPrograma(campoNome.getText());
+    private void botaoAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirActionPerformed
+        programa.abreArquivo((String)escolha.getSelectedItem());
         this.dispose();
-    }//GEN-LAST:event_botaoSalvarActionPerformed
+    }//GEN-LAST:event_botaoAbrirActionPerformed
 
-    private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
-        botaoSalvar.doClick();
-    }//GEN-LAST:event_campoNomeActionPerformed
+    private void botaoExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoExcluirActionPerformed
+        programa.excluir((String)escolha.getSelectedItem());
+        escolha.setModel(new javax.swing.DefaultComboBoxModel(programa.listarSalvos()));
+        if(escolha.getItemCount()==0){
+            this.dispose();
+        }
+    }//GEN-LAST:event_botaoExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoSalvar;
-    private javax.swing.JTextField campoNome;
+    private javax.swing.JButton botaoAbrir;
+    private javax.swing.JButton botaoExcluir;
+    private javax.swing.JComboBox escolha;
     private javax.swing.JLabel nomeLabel;
     private javax.swing.JPanel painelCabecalho;
     private javax.swing.JPanel painelFundo;

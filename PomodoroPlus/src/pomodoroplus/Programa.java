@@ -6,9 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +62,7 @@ public class Programa{
         listaPaineis = new LinkedList<>();
         relInicio = new RelInicio(this, inicioTempo);
         
-        if(!avaliaAnterior()){
+        if(!abreArquivo("Atual")){
             inicio = 0;
             inicioVelho = 0;
             duracao = 0;
@@ -105,6 +107,8 @@ public class Programa{
      * @param chamou Painel que chamou o método, pois teve seu campo Duração atualizado. Caso tenha sido chamado pela Janela Principal (modificação no campo Início) deve receber null.
      */
     public synchronized void atualiza(Painel chamou){
+        long duracaotmp = 0;
+        
         //Atualizando os tempos finais dos períodos.
         int indice;
                
@@ -123,6 +127,11 @@ public class Programa{
         }else{
             tempoAnt = listaPaineis.get(indice-1).getPeriodo().getAte();
         }
+        
+        for(int i =0 ; i<indice; i++){
+            duracaotmp += listaPaineis.get(i).getPeriodo().getDuracao();
+        }
+        
         for(int i = indice; i<listaPaineis.size(); i++){
              painel = listaPaineis.get(i);
              periodo = painel.getPeriodo();
@@ -132,11 +141,12 @@ public class Programa{
              teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
              tempoAnt = periodo.getAte();
+             duracaotmp += periodo.getDuracao();
         }
         
         this.ate = periodo.getAte();
         this.labelAte.setText(Utils.longToString1(this.ate));
-        this.duracao = this.ate - this.inicio;
+        this.duracao = duracaotmp;
         if(this.duracao<=359999){
             this.labelDuracao.setText(Utils.longToString1Duracao(this.duracao));
         }else{
@@ -149,6 +159,8 @@ public class Programa{
      * @param chamou Painel que chamou o método, pois será excluído.
      */
     public synchronized void atualizaExclusao(Painel chamou){
+        long duracaotmp = 0;
+        
         int indice;
                
         indice = listaPaineis.indexOf(chamou);
@@ -162,6 +174,11 @@ public class Programa{
         }else{
             tempoAnt = listaPaineis.get(indice-1).getPeriodo().getAte();
         }
+        
+        for(int i =0 ; i<indice; i++){
+            duracaotmp += listaPaineis.get(i).getPeriodo().getDuracao();
+        }
+        
         for(int i = indice + 1; i<listaPaineis.size(); i++){
              painel = listaPaineis.get(i);
              periodo = painel.getPeriodo();
@@ -171,11 +188,12 @@ public class Programa{
              teste.setText(Utils.longToString2(periodo.getAte()));
              teste.repaint();
              tempoAnt = periodo.getAte();
+             duracaotmp += periodo.getDuracao();
         }
         
         this.ate = periodo.getAte();
         this.labelAte.setText(Utils.longToString1(this.ate));
-        this.duracao = this.ate - this.inicio;
+        this.duracao = duracaotmp;
         if(this.duracao<=359999){
             this.labelDuracao.setText(Utils.longToString1Duracao(this.duracao));
         }else{
@@ -204,6 +222,7 @@ public class Programa{
     
     /**
      * Finaliza a programação e envia a lista de períodos para o objeto Cronometro (1ª tela).
+     * @return True: Caso o programa tenha duração maior que zero / False: Caso seja igual a zero.
      */
     public synchronized boolean finalizaProgramacao(){
         long inicioProgramado;
@@ -267,15 +286,15 @@ public class Programa{
      * Avalia se há um arquivo de um programa anterior e carrega tal programa
      * @return True: Existe o arquivo / False: Não existe o arquivo
      */
-    private boolean avaliaAnterior(){
+    public boolean abreArquivo(String nome){
         ObjectInputStream input;
         LinkedList<Periodo> listaPeriodos;
         
         try{
-            input = new ObjectInputStream(new FileInputStream("C:\\Pomodoro\\Atual.pdp") );
+            input = new ObjectInputStream(new FileInputStream("C:\\Pomodoro\\" + nome + ".pdp") );
             listaPeriodos = (LinkedList<Periodo>) input.readObject();
             input.close();
-            mostraAnterior(listaPeriodos);
+            mostrarPrograma(listaPeriodos);
             return true;
         }catch(Exception ex){
             System.err.println( "Não há arquivo." + ex.getMessage());
@@ -287,13 +306,14 @@ public class Programa{
      * Usa uma lista de Períodos presente em um arquivos para montar os Paineis correspondentes.
      * @param  listaPeriodos Lista de Períodos
      */
-    private void mostraAnterior(LinkedList<Periodo> listaPeriodos){
+    private void mostrarPrograma(LinkedList<Periodo> listaPeriodos){
         
         //Limpeza
         for(Painel pa: listaPaineis){
-            pa.removePainel();
+            pa.removeQuandoTodos();
         }
-        
+        listaPaineis.clear();
+           
         Periodo pe = listaPeriodos.get(0);
         Painel novoPainel = new Painel(janelaPrinc.getProgramaPanel(), janelaPrinc.getProgramaRolagem(), janelaPrinc, this);
         novoPainel.setPeriodo(pe);
@@ -325,9 +345,46 @@ public class Programa{
         return false;
     }
     
+    /**
+     * Salva um programa, ao clicar no botão Salvar
+     * @param nome Nome do programa a ser salvo
+     */
     public void salvaPrograma(String nome){
         LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
+        for(Periodo p : listaPeriodos){
+            System.out.println(p);
+        }
         salvaArquivo(listaPeriodos, nome);
+    }
+    
+    /**
+     * Lista os programas salvos (Arquivos no diretório C:\\Pomodoro).
+     * @return Lista de nomes dos programas salvos.
+     */
+    public String[] listarSalvos(){
+        File file;
+        file = new File("C:\\Pomodoro");
+        String[] nomes = file.list(new FilenameFilter() {
+
+            @Override
+            public boolean accept(File dir, String name){
+                return name.endsWith(".pdp") && !name.contains("Atual.pdp");
+            }
+        });        
+        for(int i = 0; i< nomes.length; i++){
+           nomes[i] = nomes[i].replaceAll(".pdp", "");
+        }
+        
+        return nomes;
+    }
+    
+    /**
+     * Exclui um programa (arquivo) salvo.
+     * @param nome Nome do programa (arquivo).
+     */
+    public void excluir(String nome){
+        File file = new File("C:\\Pomodoro\\" + nome + ".pdp");
+        file.delete();
     }
     
 }

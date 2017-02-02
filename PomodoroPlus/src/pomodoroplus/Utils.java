@@ -230,8 +230,8 @@ public class Utils{
     
     /**
      * Calcula diferença de tempo entre a hora atual e uma hora qualquer.
-     * @param horaAtual Hora (em segundos) atual do sistema.
-     * @param hora Hora (em segundos).
+     * @param horaAtual Hora (em segundos) atual do sistema (menor hora).
+     * @param hora Hora (em segundos) (maior hora).
      * @return Diferença (em segundos).
      */
     static long diferenca(long horaAtual, long hora){

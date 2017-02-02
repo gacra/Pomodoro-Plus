@@ -50,6 +50,7 @@ public class Painel extends javax.swing.JPanel{
         this.programa = programa;
         initComponents();
         janelaPric.incCont();
+        System.out.println("inc:" + janelaPric.getCont());
         periodo = new Periodo(janelaPric.getCont());
         programa.getConjPeriodos().add(this);
         programa.atualiza(this);
@@ -73,7 +74,7 @@ public class Painel extends javax.swing.JPanel{
         insereExclui = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(2, 24, 43));
-        setPreferredSize(new java.awt.Dimension(950, 40));
+        setPreferredSize(new java.awt.Dimension(738, 40));
 
         duracao.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         duracao.setForeground(new java.awt.Color(255, 255, 255));
@@ -229,7 +230,7 @@ public class Painel extends javax.swing.JPanel{
                 this.campoDuracao.requestFocus();
             }
         }else{  //Exclusão
-            removePainel();
+            removePainel(true);
         }
     }//GEN-LAST:event_insereExcluiActionPerformed
 
@@ -267,9 +268,21 @@ public class Painel extends javax.swing.JPanel{
     /**
      * Remove um painel, bem como o seu período correspondente da lista.
      */
-    public void removePainel(){
+    public void removePainel(boolean exclusao){
         this.programa.atualizaExclusao(this);
         this.programa.getConjPeriodos().remove(this);
+        this.janela.remove(this);
+        this.janela.repaint();
+        this.janelaPric.repaint();
+        this.janelaPric.decCont();
+        janela.setPreferredSize(new Dimension(this.getWidth(),janelaPric.getCont()*(40+(((FlowLayout)janela.getLayout()).getVgap()))));
+    }
+    
+    /**
+     * Remove esse painel (usado no caso de todos os paineis estarem sendo removidos).
+     * Não altera a lista de Paineis.
+     */
+    public void removeQuandoTodos(){
         this.janela.remove(this);
         this.janela.repaint();
         this.janelaPric.repaint();
