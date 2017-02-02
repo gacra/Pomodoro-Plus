@@ -18,10 +18,13 @@ public class Relogio{
         int hora = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         int seg = calendar.get(Calendar.SECOND);
-        //System.out.println("Hora: " + hora + " Min: " +  min + " Seg: " + seg);
         this.horario = (hora*3600) + (min*60) + seg;
     }
 
+    /**
+     * Obtem o horário atual do sistema (em segundos).
+     * @return Horário atual do sistema (em segundos)
+     */
     public long getHorario(){
         atualizaRelogio();
         return horario;

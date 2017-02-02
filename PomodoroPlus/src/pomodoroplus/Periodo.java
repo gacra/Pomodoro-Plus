@@ -1,7 +1,6 @@
 package pomodoroplus;
 
 import java.io.Serializable;
-import javax.swing.JLabel;
 
 /**
  * Classe que representa um período de tempo do Programa

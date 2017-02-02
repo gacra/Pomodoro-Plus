@@ -8,7 +8,7 @@ import java.awt.Toolkit;
  * @author Guilherme
  */
 public class Carregar extends javax.swing.JDialog{
-
+    //Referência para o objeto programa.
     Programa programa;
     
     /**

@@ -65,6 +65,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         
         //Inicia os componentes
         initComponents();
+        this.setLocationRelativeTo(null);
         painelHorario1 = new PainelHorario1();
         painelHorario2 = new PainelHorario2();
         
@@ -87,10 +88,12 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         suporteHorario.add(painelHorario1);
         
         //Configurações adicionais da JanelaPrincipal
+        guias.setSelectedIndex(1);
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Figuras/icone.png"));
         this.setIconImage(iconeTitulo);
-        this.setLocationRelativeTo(null);
+        
         this.setVisible(true);
+        this.iniciarAgora.doClick();
     }
 
     /**

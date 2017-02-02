@@ -1,29 +1,53 @@
 package pomodoroplus;
 
 import java.util.LinkedList;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
 /**
- *
+ * Herdeira da classe Relogio que é responsável pela contagem regressiva dos
+ * períodos na 1ª tela.
  * @author Guilherme
  */
 public class Regressivo extends Relogio implements Runnable{
-    LinkedList<Periodo> listaPeriodos;
-    JanelaPrincipal janelaPrinc;
-    JPanel suporteHorario;
-    PainelHorario1 painelHorario1;
-    PainelHorario2 painelHorario2;
-    JTable tabela;
+    //Referência para a lista de períodos (programa) que está atualmente sendo
+    //executada.
+    private LinkedList<Periodo> listaPeriodos;
+    //Referência para a janela principal.
+    private JanelaPrincipal janelaPrinc;
+    //Referência para o painel que suporta os dois tipos de mostradores para o
+    //cronômetro regressivo.
+    private JPanel suporteHorario;
+    //Painel no formato hh:mm:ss.
+    private PainelHorario1 painelHorario1;
+    //Painel no formado mm:ss.
+    private PainelHorario2 painelHorario2;
+    //Referência para a tabela da 1ª tela em que são mostradas as informações 
+    //dos períodos do programa atualmente sendo executados.
+    private JTable tabela;
     //Se true: painelHorario1 ; Se false: PainelHorario2
-    boolean qualPainel;
-    long tempo;
-    boolean pausado;
-    long ateAnterior;
-    long horaPausa;
-    long duracaoPausa, duracaoPausaParcial;
+    private boolean qualPainel;
+    //Variável auxiliar usada para guardar quanto tempo (em segundos) falta para
+    //um período acabar.
+    private long tempo;
+    //Indica se o período está pausado (true) ou não (false).
+    private boolean pausado;
+    //Variável auxiliar. Guarda a hora que o período atual deveria acabar, antes
+    //da pausa mais recente.
+    private long ateAnterior;
+    //Hora (em segundos) que a pausa mais recente se iniciou.
+    private long horaPausa;
+    //Duração somada (em segundos) de todas as pausas sofridas pelo período
+    //atual.
+    private long duracaoPausa;
+    //Duração (em segundos) apenas da pausa mais recente sofridas pelo período
+    //atual.
+    private long duracaoPausaParcial;
     
+    /**
+     * Cria novo objeto Regressivo
+     * @param janelaPrinc Janela Principal
+     */
     public Regressivo(JanelaPrincipal janelaPrinc){
         this.janelaPrinc = janelaPrinc;
         this.suporteHorario = janelaPrinc.getSuporteHorario();
@@ -36,13 +60,21 @@ public class Regressivo extends Relogio implements Runnable{
         this.duracaoPausa = 0;
     }
 
+    /**
+     * Passagem da lista de Períodos que o regressivo irá executar.
+     * @param listaPeriodos 
+     */
     public void setListaPeriodos(LinkedList<Periodo> listaPeriodos){
         this.listaPeriodos = listaPeriodos;
     }
     
+    /**
+     * Passa período por período cronometrando quando tempo falta para o término
+     * do mesmo. Atualiza o mostrador do cronômetro, os dados de pausa na tabela,
+     * bem como a indicação de qual o período atual.
+     */
     @Override
     public void run(){
-        long ate;
         
         janelaPrinc.voltaLinha();
         
@@ -78,6 +110,10 @@ public class Regressivo extends Relogio implements Runnable{
         }
     }
 
+    /**
+     * Atualiza o mostrador do cronômetro regressivo com o tempo correto.
+     * Também escolhe o mostrador apropriado (mais ou menos que 1h).
+     */
     private void atualizaMostrador(){
         if(tempo>=3600){    //Mais que 1 hora
             if(!qualPainel){
@@ -99,23 +135,37 @@ public class Regressivo extends Relogio implements Runnable{
         }
     }
 
+    /**
+     * Toca o alarme.
+     */
     private void alarme(){
         if(janelaPrinc.isSom()){
             this.janelaPrinc.getAudio(janelaPrinc.getIndiceAlarme()).play();
         }
     }
 
-   public void pausar(){
+    /**
+     * Pausa o período.
+     */
+    public void pausar(){
         pausado = true;
         atualizaRelogio();
         horaPausa = horario;
     }
     
+    /**
+     * Continua o período.
+     */
     public void continuar(){
         pausado = false;
         duracaoPausa += duracaoPausaParcial;
     }
 
+    /**
+     * Atualiza os tempos de término (até) de todos os períodos afetados quando
+     * um deles é pausado.
+     * @param chamou Período pausado, devido ao qual este método foi chamado.
+     */
     private void atualizaPausa(Periodo chamou){
         int indice;
 

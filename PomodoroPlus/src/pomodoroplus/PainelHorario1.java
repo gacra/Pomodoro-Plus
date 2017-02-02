@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pomodoroplus;
 
 import javax.swing.JLabel;
 
 /**
- *
+ * Painel usado pelo cronômetro regressivo para tempos maiores ou iguais a 1h.
+ * Possui campos de horas, minutos e segundos.
  * @author Guilherme
  */
 public class PainelHorario1 extends javax.swing.JPanel{

@@ -3,10 +3,14 @@ package pomodoroplus;
 import java.text.DecimalFormat;
 
 /**
- * Classe de métodos abstratos de conversão.
+ * Classe de métodos abstratos de manipulação de tempos.
  * @author Guilherme
  */
 public class Utils{
+    
+    /********************************
+     * CONVERSÕES TEMPO <--> STRING *
+     ********************************/
     
     /**
     * Converte uma string no formato 00:00:00 no tempo correspondente em segundos.
@@ -185,6 +189,10 @@ public class Utils{
         return retorno;
     }
     
+    /**********
+     * TESTES *
+     **********/
+    
     /**
      * Testa se a string no formato 00 h 00 m 00 s tem o tempo zero.
      * @param texto String no formato 00 h 00 m 00 s.
@@ -227,6 +235,9 @@ public class Utils{
         }
     }
     
+    /***********
+     * CÁLCULO *
+     ***********/
     
     /**
      * Calcula diferença de tempo entre a hora atual e uma hora qualquer.

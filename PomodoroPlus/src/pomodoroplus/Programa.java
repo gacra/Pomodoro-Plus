@@ -4,16 +4,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 
@@ -24,7 +20,10 @@ import javax.swing.JLabel;
 public class Programa{
     
     //Valor (em segundos) da hora de início do programa
-    private long inicio, inicioVelho;
+    private long inicio;
+    //Variável auxiliar. Guarda o valor do início digitado pelo usuário, antes
+    //do "iniciar agora" ser ativado.
+    private long inicioVelho;
     //Valor (em segundos) da duração do programa
     private long duracao;
     //Label tempo de duração do programa na JanelaPrincipal
@@ -37,7 +36,7 @@ public class Programa{
     private LinkedList<Painel> listaPaineis;
     //Objeto do relógio que altera o valor do horário de início
     private RelInicio relInicio;
-    //Thread do objeto anterios
+    //Thread do objeto anterior
     private Thread relInicioThread;
     //Referência para o campo inicioTempo da Janela Principal
     JFormattedTextField inicioTempo;
@@ -52,6 +51,7 @@ public class Programa{
      * @param labelAte Label tempo final do programa na JanelaPrincipal
      * @param inicioTempo Referência para o campo inicioTempo da Janela Principal
      * @param cronometro Referência para o Cronômetro ao qual será enviado a programação
+     * @param janelaPrinc Referência para a Janela Principal
      */
     public Programa(JLabel labelDuracao, JLabel labelAte, JFormattedTextField inicioTempo, Cronometro cronometro, JanelaPrincipal janelaPrinc){
         this.labelDuracao = labelDuracao;
@@ -73,38 +73,18 @@ public class Programa{
             janelaPrinc.getProgramaPanel().setPreferredSize(new Dimension(novoPainel.getWidth(),janelaPrinc.getCont()*(40+(((FlowLayout)janelaPrinc.getProgramaPanel().getLayout()).getVgap()))));
         }
     }
-
-    public long getInicio(){
-        return inicio;
-    }
-
-    public synchronized void setInicio(long inicio){
-        this.inicio = inicio;
-    }
-
-    public long getDuracao(){
-        return duracao;
-    }
-
-    public void setDuracao(long duracao){
-        this.duracao = duracao;
-    }
-
-    public long getAte(){
-        return ate;
-    }
-
-    public void setAte(long ate){
-        this.ate = ate;
-    }
-
-    public LinkedList<Painel> getConjPeriodos(){
-        return listaPaineis;
-    }
+    
+    /**************************
+     * MANIPULAÇÃO DE PERÍODOS
+     **************************/
     
     /**
-     * Atualiza os campos Início, Duração e Até da Janela Principal, bem como o campo Até de todos os Paineis afetados. Método para o contexto de atualização de um painel.
-     * @param chamou Painel que chamou o método, pois teve seu campo Duração atualizado. Caso tenha sido chamado pela Janela Principal (modificação no campo Início) deve receber null.
+     * Atualiza os campos Início, Duração e Até da Janela Principal, bem como o 
+     * campo Até de todos os Paineis afetados. Método para o contexto de 
+     * atualização de um painel.
+     * @param chamou Painel que chamou o método, pois teve seu campo Duração 
+     * atualizado. Caso tenha sido chamado pela Janela Principal (modificação no 
+     * campo Início) deve receber null.
      */
     public synchronized void atualiza(Painel chamou){
         long duracaotmp = 0;
@@ -155,7 +135,9 @@ public class Programa{
     }
 
      /**
-     * Atualiza os campos Início, Duração e Até da Janela Principal, bem como o campo Até de todos os Paineis afetados. Método para o contexto de exclusão de um painel.
+     * Atualiza os campos Início, Duração e Até da Janela Principal, bem como o 
+     * campo Até de todos os Paineis afetados. Método para o contexto de 
+     * exclusão de um painel.
      * @param chamou Painel que chamou o método, pois será excluído.
      */
     public synchronized void atualizaExclusao(Painel chamou){
@@ -201,26 +183,7 @@ public class Programa{
         }
     }
     
-    /**
-     * Inicia a thread que atualiza o tempo de início com a hora atual do sistema.
-     */
-    public void iniciaThreadRelogio(){
-        inicioVelho = inicio;
-        relInicioThread = new Thread(relInicio);
-        relInicioThread.start();
-    }
-    
-     /**
-     * Para a thread que atualiza o tempo de início com a hora atual do sistema.
-     */
-    public void paraThreadRelogio(){
-        relInicioThread.interrupt();
-        inicio = inicioVelho;
-        atualiza(null);
-        inicioTempo.setText(Utils.longToString1(inicio));
-    }
-    
-    /**
+        /**
      * Finaliza a programação e envia a lista de períodos para o objeto Cronometro (1ª tela).
      * @return True: Caso o programa tenha duração maior que zero / False: Caso seja igual a zero.
      */
@@ -255,7 +218,34 @@ public class Programa{
         }
         return retorno;
     }
-
+    
+    /*******************************************
+     * MANIPULAÇÃO DA THREAD DO "INICIAR AGORA"
+     *******************************************/
+    
+    /**
+     * Inicia a thread que atualiza o tempo de início com a hora atual do sistema.
+     */
+    public void iniciaThreadRelogio(){
+        inicioVelho = inicio;
+        relInicioThread = new Thread(relInicio);
+        relInicioThread.start();
+    }
+    
+     /**
+     * Para a thread que atualiza o tempo de início com a hora atual do sistema.
+     */
+    public void paraThreadRelogio(){
+        relInicioThread.interrupt();
+        inicio = inicioVelho;
+        atualiza(null);
+        inicioTempo.setText(Utils.longToString1(inicio));
+    }
+    
+    /**********************************************
+     * SALVAR E CARREGAR PERÍODOS PARA/DE ARQUIVOS
+     **********************************************/
+    
     /**
      * Salva os períodos da programação em um arquivo.
      * @param listaPeriodos Lista de períodos da programação.
@@ -283,8 +273,9 @@ public class Programa{
     }
 
     /**
-     * Avalia se há um arquivo de um programa anterior e carrega tal programa
-     * @return True: Existe o arquivo / False: Não existe o arquivo
+     * Avalia se há um arquivo de um programa anterior e carrega tal programa.
+     * @param nome Nome do arquivo a ser aberto.
+     * @return True: Existe o arquivo / False: Não existe o arquivo.
      */
     public boolean abreArquivo(String nome){
         ObjectInputStream input;
@@ -325,7 +316,6 @@ public class Programa{
             novoPainel.ajustaPainel();
             novoPainel = novoPainel.criaNovoPainel();
             novoPainel.setPeriodo(pe);
-            System.out.println("hey");
         }
         
         novoPainel.ajustaPainel();
@@ -351,9 +341,6 @@ public class Programa{
      */
     public void salvaPrograma(String nome){
         LinkedList<Periodo> listaPeriodos = fazListaPeriodos(); 
-        for(Periodo p : listaPeriodos){
-            System.out.println(p);
-        }
         salvaArquivo(listaPeriodos, nome);
     }
     
@@ -385,6 +372,38 @@ public class Programa{
     public void excluir(String nome){
         File file = new File("C:\\Pomodoro\\" + nome + ".pdp");
         file.delete();
+    }
+    
+    /*********************
+     * GETTERS E SETTER 
+     *********************/
+    
+    public long getInicio(){
+        return inicio;
+    }
+
+    public synchronized void setInicio(long inicio){
+        this.inicio = inicio;
+    }
+
+    public long getDuracao(){
+        return duracao;
+    }
+
+    public void setDuracao(long duracao){
+        this.duracao = duracao;
+    }
+
+    public long getAte(){
+        return ate;
+    }
+
+    public void setAte(long ate){
+        this.ate = ate;
+    }
+
+    public LinkedList<Painel> getListaPaineis(){
+        return listaPaineis;
     }
     
 }

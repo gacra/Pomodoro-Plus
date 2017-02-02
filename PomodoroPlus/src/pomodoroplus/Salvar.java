@@ -1,27 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pomodoroplus;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.AbstractButton;
-import javax.swing.plaf.metal.MetalButtonUI;
 
 /**
  * Janela para salvar um programa.
  * @author Guilherme
  */
 public class Salvar extends javax.swing.JDialog{
-
+    //Referência para o objeto programa (comanda a 2ª tela).
     Programa programa;
     
     /**
      * Creates new form Salvar
+     * @param programa Referência para o objeto programa (comanda a 2ª tela).
      */
     public Salvar(java.awt.Frame parent, boolean modal, Programa programa){
         super(parent, modal);
