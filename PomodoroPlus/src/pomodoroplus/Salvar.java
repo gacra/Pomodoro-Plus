@@ -76,6 +76,11 @@ public class Salvar extends javax.swing.JDialog{
         );
 
         campoNome.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        campoNome.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                campoNomeCaretUpdate(evt);
+            }
+        });
         campoNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoNomeActionPerformed(evt);
@@ -130,6 +135,7 @@ public class Salvar extends javax.swing.JDialog{
         );
 
         botaoSalvar.setUI(new UIBotao());
+        botaoSalvar.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,6 +159,14 @@ public class Salvar extends javax.swing.JDialog{
     private void campoNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNomeActionPerformed
         botaoSalvar.doClick();
     }//GEN-LAST:event_campoNomeActionPerformed
+
+    private void campoNomeCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_campoNomeCaretUpdate
+        if(campoNome.getText().equals("")){
+            botaoSalvar.setEnabled(false);
+        }else{
+            botaoSalvar.setEnabled(true);
+        }
+    }//GEN-LAST:event_campoNomeCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -66,6 +66,7 @@ public class Regressivo extends Relogio implements Runnable{
      */
     public void setListaPeriodos(LinkedList<Periodo> listaPeriodos){
         this.listaPeriodos = listaPeriodos;
+        this.pausado = false;
     }
     
     /**

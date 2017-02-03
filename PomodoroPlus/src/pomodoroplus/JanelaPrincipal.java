@@ -771,6 +771,9 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             this.inicioTempo.setEditable(true);
             this.inicioTempo.setFocusable(true);
             this.guias.setSelectedIndex(0);
+            pausaCont.setText(" Pausar");
+            pausaCont.setIcon(new ImageIcon(getClass().getResource("/Figuras/pause.png")));
+            pausado = false;
         }
     }//GEN-LAST:event_iniciarActionPerformed
 
