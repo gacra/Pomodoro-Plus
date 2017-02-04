@@ -252,4 +252,22 @@ public class Utils{
             return (hora + 86400) - horaAtual;
         }
     }
+    
+    /******************
+     * DETECÇÃO DO SO *
+     ******************/
+    
+    /**
+     * Indica se o Sistema Operacional no qual o programa está rodando é Linux.
+     * @return True: O SO é Linux / False: O SO não é Linux (Windows ou outro).
+     */
+    static boolean isLinux(){
+        String SO = System.getProperty("os.name").toLowerCase();
+        
+        if(SO.contains("nix") || SO.contains("nux") || SO.indexOf("aix") > 0 ){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

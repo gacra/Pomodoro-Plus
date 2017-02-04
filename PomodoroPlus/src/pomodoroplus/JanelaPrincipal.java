@@ -50,6 +50,8 @@ public class JanelaPrincipal extends javax.swing.JFrame{
     private ArrayList<AudioClip> audioVector;
     //Qual o índice do alarme escolhido
     private int indiceAlarme = 0;
+    //Indica se o SO usado é Linux
+    private boolean linux;
     
     /**
      * Creates new form JanelaPrincipal
@@ -64,10 +66,12 @@ public class JanelaPrincipal extends javax.swing.JFrame{
         }
         
         //Inicia os componentes
+        linux = Utils.isLinux();
+        System.out.println("É Linux = " + linux );
         initComponents();
         this.setLocationRelativeTo(null);
-        painelHorario1 = new PainelHorario1();
-        painelHorario2 = new PainelHorario2();
+        painelHorario1 = new PainelHorario1(linux);
+        painelHorario2 = new PainelHorario2(linux);
         
         //Inicia o Cronometro (responsável pela 1ª tela)
         cronometro = new Cronometro(this);
@@ -251,9 +255,9 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                 .addComponent(nomeProg1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nomeProg2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 663, Short.MAX_VALUE)
+                .addGap(645, 645, 645)
                 .addComponent(ajuda)
-                .addGap(36, 36, 36))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         cabecalhoLayout.setVerticalGroup(
             cabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +333,7 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                                 .addGap(2, 2, 2)
                                 .addComponent(selectSom, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tabelaRolagem, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58))
             .addGroup(painelPrincFundoLayout.createSequentialGroup()
@@ -426,17 +430,29 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             ate.setText("Até:");
             ate.setFocusable(false);
 
-            ateTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            if(!linux){
+                ateTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            }else{
+                ateTempo.setFont(new java.awt.Font("Century Gothic", 1, 42)); // NOI18N
+            }
             ateTempo.setText("00:00:00");
             ateTempo.setFocusable(false);
 
-            duracaoTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            if(!linux){
+                duracaoTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            }else{
+                duracaoTempo.setFont(new java.awt.Font("Century Gothic", 1, 42)); // NOI18N
+            }
             duracaoTempo.setText("00:00:00");
             duracaoTempo.setFocusable(false);
 
             inicioTempo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
             inicioTempo.setText("00:00:00");
-            inicioTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            if(!linux){
+                inicioTempo.setFont(new java.awt.Font("Century Gothic", 1, 52)); // NOI18N
+            }else{
+                inicioTempo.setFont(new java.awt.Font("Century Gothic", 1, 42)); // NOI18N
+            }
             inicioTempo.addCaretListener(new javax.swing.event.CaretListener() {
                 public void caretUpdate(javax.swing.event.CaretEvent evt) {
                     inicioTempoCaretUpdate(evt);
@@ -462,20 +478,20 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                 iniDurAteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(iniDurAteLayout.createSequentialGroup()
                     .addComponent(inicio)
-                    .addGap(18, 18, 18)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(iniDurAteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(iniDurAteLayout.createSequentialGroup()
                             .addComponent(iniciarAgora)
                             .addGap(0, 0, Short.MAX_VALUE))
                         .addGroup(iniDurAteLayout.createSequentialGroup()
-                            .addComponent(inicioTempo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(65, 65, 65)
+                            .addComponent(inicioTempo, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(duracao)
-                            .addGap(18, 18, 18)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(duracaoTempo)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ate)
-                            .addGap(18, 18, 18)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(ateTempo))))
             );
             iniDurAteLayout.setVerticalGroup(
@@ -546,9 +562,9 @@ public class JanelaPrincipal extends javax.swing.JFrame{
                     .addComponent(nomeProg1Alt)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(nomeProg2Alt)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(645, 645, 645)
                     .addComponent(ajudaAlt)
-                    .addGap(35, 35, 35))
+                    .addContainerGap(53, Short.MAX_VALUE))
             );
             cabecalhoAltLayout.setVerticalGroup(
                 cabecalhoAltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -611,12 +627,12 @@ public class JanelaPrincipal extends javax.swing.JFrame{
             botoesLayout.setHorizontalGroup(
                 botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, botoesLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(24, 24, 24)
                     .addGroup(botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(carregar)
                         .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(25, 25, 25))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
             botoesLayout.setVerticalGroup(
                 botoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

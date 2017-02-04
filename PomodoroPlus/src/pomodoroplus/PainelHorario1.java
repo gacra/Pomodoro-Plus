@@ -9,10 +9,13 @@ import javax.swing.JLabel;
  */
 public class PainelHorario1 extends javax.swing.JPanel{
 
+    private boolean linux;
+    
     /**
      * Creates new form PainelHorario1
      */
-    public PainelHorario1(){
+    public PainelHorario1(boolean linux){
+        this.linux = linux;
         initComponents();
         this.setVisible(true);
     }
@@ -36,10 +39,18 @@ public class PainelHorario1 extends javax.swing.JPanel{
         setBackground(new java.awt.Color(238, 241, 246));
         setPreferredSize(new java.awt.Dimension(480, 170));
 
-        horMin.setFont(new java.awt.Font("Century Gothic", 1, 150)); // NOI18N
+        if(!linux){
+            horMin.setFont(new java.awt.Font("Century Gothic", 1, 150)); // NOI18N
+        }else{
+            horMin.setFont(new java.awt.Font("Century Gothic", 1, 120)); // NOI18N
+        }
         horMin.setText("00:00");
 
-        seg.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
+        if(!linux){
+            seg.setFont(new java.awt.Font("Century Gothic", 1, 48)); // NOI18N
+        }else{
+            seg.setFont(new java.awt.Font("Century Gothic", 1, 38)); // NOI18N
+        }
         seg.setText(":00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -51,7 +62,7 @@ public class PainelHorario1 extends javax.swing.JPanel{
                 .addComponent(horMin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(seg)
-                .addGap(19, 19, 19))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

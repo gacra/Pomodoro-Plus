@@ -9,10 +9,13 @@ import javax.swing.JLabel;
  */
 public class PainelHorario2 extends javax.swing.JPanel{
 
+    private boolean linux;
+    
     /**
      * Creates new form PainelHorario2
      */
-    public PainelHorario2(){
+    public PainelHorario2(boolean linux){
+        this.linux = linux;
         initComponents();
         this.setVisible(true);
     }
@@ -30,7 +33,11 @@ public class PainelHorario2 extends javax.swing.JPanel{
 
         setBackground(new java.awt.Color(238, 241, 246));
 
-        minSeg.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
+        if(!linux){
+            minSeg.setFont(new java.awt.Font("Century Gothic", 1, 180)); // NOI18N
+        }else{
+            minSeg.setFont(new java.awt.Font("Century Gothic", 1, 144)); // NOI18N
+        }
         minSeg.setText("00:00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

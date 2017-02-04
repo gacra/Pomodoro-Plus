@@ -253,17 +253,28 @@ public class Programa{
     private void salvaArquivo(LinkedList<Periodo> listaPeriodos, String nome, boolean atual){
         ObjectOutputStream output;
         File file;
+        String diretorio;
+        String barra;
+        if(Utils.isLinux()){
+            diretorio = "/home/" + System.getProperty("user.name") + "/Pomodoro";
+            System.out.println(diretorio);
+            barra = "/";
+        }else{
+            diretorio = "C:\\Pomodoro";
+            barra = "\\";
+        }
+        
         
         try{
-            file = new File("C:\\Pomodoro");
+            file = new File(diretorio);
             file.mkdir();
             int i = 1;
             String novoNome = nome;
-            while((new File("C:\\Pomodoro\\" + novoNome + ".pdp").exists() || novoNome.equals("Atual"))&& !atual){
+            while((new File(diretorio + barra + novoNome + ".pdp").exists() || novoNome.equals("Atual"))&& !atual){
                 novoNome = nome + String.valueOf(i);
                 i++;
             }
-            output = new ObjectOutputStream(new FileOutputStream("C:\\Pomodoro\\" + novoNome + ".pdp") );
+            output = new ObjectOutputStream(new FileOutputStream(diretorio + barra + novoNome + ".pdp") );
             output.writeObject(listaPeriodos);
             output.close();
         }catch(IOException ex){
@@ -281,8 +292,20 @@ public class Programa{
         ObjectInputStream input;
         LinkedList<Periodo> listaPeriodos;
         
+        String diretorio;
+        String barra;
+        
+        if(Utils.isLinux()){
+            diretorio = "/home/" + System.getProperty("user.name") + "/Pomodoro";
+            System.out.println(diretorio);
+            barra = "/";
+        }else{
+            diretorio = "C:\\Pomodoro";
+            barra = "\\";
+        }
+        
         try{
-            input = new ObjectInputStream(new FileInputStream("C:\\Pomodoro\\" + nome + ".pdp") );
+            input = new ObjectInputStream(new FileInputStream(diretorio + barra + nome + ".pdp") );
             listaPeriodos = (LinkedList<Periodo>) input.readObject();
             input.close();
             mostrarPrograma(listaPeriodos);
@@ -350,19 +373,33 @@ public class Programa{
      */
     public String[] listarSalvos(){
         File file;
-        file = new File("C:\\Pomodoro");
-        String[] nomes = file.list(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name){
-                return name.endsWith(".pdp") && !name.contains("Atual.pdp");
-            }
-        });        
-        for(int i = 0; i< nomes.length; i++){
-           nomes[i] = nomes[i].replaceAll(".pdp", "");
+        
+        String diretorio;
+        
+        if(Utils.isLinux()){
+            diretorio = "/home/" + System.getProperty("user.name") + "/Pomodoro";
+            System.out.println(diretorio);
+        }else{
+            diretorio = "C:\\Pomodoro";
         }
         
-        return nomes;
+        file = new File(diretorio);
+        if(file.exists()){
+            String[] nomes = file.list(new FilenameFilter() {
+
+                @Override
+                public boolean accept(File dir, String name){
+                    return name.endsWith(".pdp") && !name.contains("Atual.pdp");
+                }
+            });        
+            for(int i = 0; i< nomes.length; i++){
+               nomes[i] = nomes[i].replaceAll(".pdp", "");
+            }
+            return nomes;
+        }else{
+            return new String[0];
+        }
+        
     }
     
     /**
@@ -370,7 +407,20 @@ public class Programa{
      * @param nome Nome do programa (arquivo).
      */
     public void excluir(String nome){
-        File file = new File("C:\\Pomodoro\\" + nome + ".pdp");
+        
+        String diretorio;
+        String barra;
+        
+        if(Utils.isLinux()){
+            diretorio = "/home/" + System.getProperty("user.name") + "/Pomodoro";
+            System.out.println(diretorio);
+            barra = "/";
+        }else{
+            diretorio = "C:\\Pomodoro";
+            barra = "\\";
+        }
+        
+        File file = new File(diretorio + barra + nome + ".pdp");
         file.delete();
     }
     

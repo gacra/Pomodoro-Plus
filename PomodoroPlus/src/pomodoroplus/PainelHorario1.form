@@ -39,7 +39,7 @@
               <Component id="horMin" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="seg" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -64,19 +64,25 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="horMin">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="}else{&#xa;horMin.setFont(new java.awt.Font(&quot;Century Gothic&quot;, 1, 120)); // NOI18N&#xa;}">
           <Font name="Century Gothic" size="150" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="00:00"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if(!linux){"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="seg">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="}else{&#xa;seg.setFont(new java.awt.Font(&quot;Century Gothic&quot;, 1, 38)); // NOI18N&#xa;}">
           <Font name="Century Gothic" size="48" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value=":00"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if(!linux){"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

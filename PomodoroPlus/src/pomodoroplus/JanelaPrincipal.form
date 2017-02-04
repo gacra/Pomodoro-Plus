@@ -146,7 +146,7 @@
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="tabelaRolagem" min="-2" pref="543" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                           </Group>
@@ -277,9 +277,9 @@
                                   <Component id="nomeProg1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="nomeProg2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="663" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="645" max="-2" attributes="0"/>
                                   <Component id="ajuda" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                  <EmptySpace pref="56" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -526,21 +526,21 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="inicio" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Component id="iniciarAgora" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
-                                          <Component id="inicioTempo" min="-2" pref="227" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                                          <Component id="inicioTempo" min="-2" pref="223" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                           <Component id="duracao" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Component id="duracaoTempo" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace pref="67" max="32767" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                           <Component id="ate" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
                                           <Component id="ateTempo" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -617,26 +617,32 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="ateTempo">
                           <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="}else{&#xa;ateTempo.setFont(new java.awt.Font(&quot;Century Gothic&quot;, 1, 42)); // NOI18N&#xa;}">
                               <Font name="Century Gothic" size="52" style="1"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="00:00:00"/>
                             <Property name="focusable" type="boolean" value="false"/>
                           </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if(!linux){"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JLabel" name="duracaoTempo">
                           <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="}else{&#xa;duracaoTempo.setFont(new java.awt.Font(&quot;Century Gothic&quot;, 1, 42)); // NOI18N&#xa;}">
                               <Font name="Century Gothic" size="52" style="1"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="00:00:00"/>
                             <Property name="focusable" type="boolean" value="false"/>
                           </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if(!linux){"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JFormattedTextField" name="inicioTempo">
                           <Properties>
                             <Property name="horizontalAlignment" type="int" value="0"/>
-                            <Property name="text" type="java.lang.String" value="00:00:00"/>
+                            <Property name="text" type="java.lang.String" value="00:00:00" postCode="if(!linux){"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Century Gothic" size="52" style="1"/>
                             </Property>
@@ -647,6 +653,7 @@
                           </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="try{&#xa;    MaskFormatter maskID = new MaskFormatter(&quot;##:##:##&quot;);&#xa;    maskID.setPlaceholderCharacter(&apos;0&apos;);&#xa;    maskID.install(inicioTempo);&#xa;}catch(ParseException ex){}"/>
+                            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="}else{&#xa;inicioTempo.setFont(new java.awt.Font(&quot;Century Gothic&quot;, 1, 42)); // NOI18N&#xa;}"/>
                           </AuxValues>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="iniciarAgora">
@@ -679,9 +686,9 @@
                                   <Component id="nomeProg1Alt" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="nomeProg2Alt" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="645" max="-2" attributes="0"/>
                                   <Component id="ajudaAlt" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                  <EmptySpace pref="53" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -756,13 +763,13 @@
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="carregar" min="-2" max="-2" attributes="0"/>
                                       <Component id="salvar" min="-2" max="-2" attributes="0"/>
                                       <Component id="iniciar" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
